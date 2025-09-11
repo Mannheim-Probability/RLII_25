@@ -18,6 +18,7 @@ hub
 *.json
 _build/
 run_crossq_bipedal.sh
+logs/
 
 tests/dummy_env/build/
 
