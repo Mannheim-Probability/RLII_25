@@ -1,63 +1,45 @@
-<!-- [![pipeline status](https://gitlab.com/araffin/rl-baselines3-zoo/badges/master/pipeline.svg)](https://gitlab.com/araffin/rl-baselines3-zoo/-/commits/master) -->
-![CI](https://github.com/DLR-RM/rl-baselines3-zoo/workflows/CI/badge.svg)
-[![Documentation Status](https://readthedocs.org/projects/rl-baselines3-zoo/badge/?version=master)](https://rl-baselines3-zoo.readthedocs.io/en/master/?badge=master)
-![coverage report](https://img.shields.io/badge/coverage-68%25-brightgreen.svg?style=flat") [![codestyle](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
+# RL II Lecture HWS25 University of Mannheim
 
+This is the GitHub Repository for the lecture Reinforcement Learning II in the fall semester of 2025 at the University of Mannheim. It is forked and modified from the [RL Baselines3 Zoo](https://github.com/DLR-RM/rl-baselines3-zoo) Repository. Only the core functionalities of the repository are contained, such that it will be easy to get accustomed to the workings. The interested student is encouraged to explore the original repo and use any further tools they might find useful in their branch.
 
+RL Baselines3 Zoo is a training framework for Reinforcement Learning (RL), using [Stable Baselines3](https://github.com/DLR-RM/stable-baselines3). It provides scripts for training, evaluating agents, tuning hyperparameters, plotting results, and recording videos.
 
-# RL Baselines3 Zoo: A Training Framework for Stable Baselines3 Reinforcement Learning Agents
-
-<img src="images/car.jpg" align="right" width="40%"/>
-
-RL Baselines3 Zoo is a training framework for Reinforcement Learning (RL), using [Stable Baselines3](https://github.com/DLR-RM/stable-baselines3).
-
-It provides scripts for training, evaluating agents, tuning hyperparameters, plotting results and recording videos.
-
-In addition, it includes a collection of tuned hyperparameters for common environments and RL algorithms, and agents trained with those settings.
-
-
-We are **looking for contributors** to complete the collection!
-
-Goals of this repository:
-
-1. Provide a simple interface to train and enjoy RL agents
-2. Benchmark the different Reinforcement Learning algorithms
-3. Provide tuned hyperparameters for each environment and RL algorithm
-4. Have fun with the trained agents!
-
-This is the SB3 version of the original SB2 [rl-zoo](https://github.com/araffin/rl-baselines-zoo).
-
-Note: although SB3 and the RL Zoo are compatible with Numpy>=2.0, you will need Numpy<2 to run agents on pybullet envs (see [issue](https://github.com/bulletphysics/bullet3/issues/4649)).
+In addition, it includes a collection of tuned hyperparameters for common environments and RL algorithms, and agents trained with those settings (removed).
 
 ## Documentation
 
-Documentation is available online: [https://rl-baselines3-zoo.readthedocs.io/](https://rl-baselines3-zoo.readthedocs.io)
+Documentation is available online: [https://rl-baselines3-zoo.readthedocs.io/](https://rl-baselines3-zoo.readthedocs.io) (this includes removed features found in the original repo as well).
 
 ## Installation
 
-### Minimal installation
+This installation is written and tested for MacOS. For Windows, the steps are similar but might involve slightly different programs and commands.
 
-From source:
-```
-pip install -e .
-```
-
-As a python package:
-```
-pip install rl_zoo3
-```
-
-Note: you can do `python -m rl_zoo3.train` from any folder and you have access to `rl_zoo3` command line interface, for instance, `rl_zoo3 train` is equivalent to `python train.py`
-
-### Full installation (with extra envs and test dependencies)
+Install [pyenv](https://github.com/pyenv/pyenv) and set the python version in the directory to 3.9.19. Then clone the github project:
 
 ```
-apt-get install swig cmake ffmpeg
+git clone https://github.com/Mannheim-Probability/RL-Mannheim
+``` 
+
+Now create a branch with your name and check it out. Then create a virtual environment:
+
+```
+python -m venv venv
+```
+
+Select it for your workspace, and activate it via:
+
+```
+source venv/bin/activate
+´´´
+
+Install the necessary requirements:
+
+```
+pip install swig
 pip install -r requirements.txt
-pip install -e .[plots,tests]
 ```
 
-Please see [Stable Baselines3 documentation](https://stable-baselines3.readthedocs.io/en/master/) for alternatives to install stable baselines3.
+or use poetry install after installing swig via pip (already configured).
 
 ## Train an Agent
 
@@ -75,19 +57,19 @@ python train.py --algo sac --env HalfCheetahBulletEnv-v0 --eval-freq 10000 --eva
 
 More examples are available in the [documentation](https://rl-baselines3-zoo.readthedocs.io).
 
+Be careful: You will not be able to train any pybullet or panda robot environments since there is an issue for installing pybullet (which both types of environments use) on MacOS!
 
 ## Integrations
 
-The RL Zoo has some integration with other libraries/services like Weights & Biases for experiment tracking or Hugging Face for storing/sharing trained models. You can find out more in the [dedicated section](https://rl-baselines3-zoo.readthedocs.io/en/master/guide/integrations.html) of the documentation.
+The RL Zoo has some integration with other libraries/services like Weights & Biases for experiment tracking or Hugging Face for storing/sharing trained models. You can find out more in the [dedicated section](https://rl-baselines3-zoo.readthedocs.io/en/master/guide/integrations.html) of the documentation (largely removed).
 
 ## Plot Scripts
 
-Please see the [dedicated section](https://rl-baselines3-zoo.readthedocs.io/en/master/guide/plot.html) of the documentation.
+Please see the [dedicated section](https://rl-baselines3-zoo.readthedocs.io/en/master/guide/plot.html) of the documentation (removed).
 
 ## Enjoy a Trained Agent
 
-**Note: to download the repo with the trained agents, you must use `git clone --recursive https://github.com/DLR-RM/rl-baselines3-zoo`** in order to clone the submodule too.
-
+The original repository comes with some pretrained agents (removed). You can in principle use any agent you trained yourself with the following commands or add one of the trained agents from Stable Baselines.
 
 If the trained agent exists, then you can see it in action using:
 ```
@@ -105,152 +87,11 @@ Please see the [dedicated section](https://rl-baselines3-zoo.readthedocs.io/en/m
 
 ## Custom Configuration
 
-Please see the [dedicated section](https://rl-baselines3-zoo.readthedocs.io/en/master/guide/config.html) of the documentation.
+Please see the [dedicated section](https://rl-baselines3-zoo.readthedocs.io/en/master/guide/config.html) of the documentation (removed).
 
 ## Current Collection: 200+ Trained Agents!
 
-Final performance of the trained agents can be found in [`benchmark.md`](./benchmark.md). To compute them, simply run `python -m rl_zoo3.benchmark`.
-
-List and videos of trained agents can be found on our Huggingface page: https://huggingface.co/sb3
-
-*NOTE: this is not a quantitative benchmark as it corresponds to only one run (cf [issue #38](https://github.com/araffin/rl-baselines-zoo/issues/38)). This benchmark is meant to check algorithm (maximal) performance, find potential bugs and also allow users to have access to pretrained agents.*
-
-### Atari Games
-
-7 atari games from OpenAI benchmark (NoFrameskip-v4 versions).
-
-|  RL Algo |  BeamRider         | Breakout           | Enduro             |  Pong | Qbert | Seaquest           | SpaceInvaders      |
-|----------|--------------------|--------------------|--------------------|-------|-------|--------------------|--------------------|
-| A2C      | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |
-| PPO      | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |
-| DQN      | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |
-| QR-DQN   | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |
-
-Additional Atari Games (to be completed):
-
-|  RL Algo |  MsPacman   | Asteroids | RoadRunner |
-|----------|-------------|-----------|------------|
-| A2C      | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |
-| PPO      | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |
-| DQN      | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |
-| QR-DQN   | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |
-
-
-### Classic Control Environments
-
-|  RL Algo |  CartPole-v1 | MountainCar-v0 | Acrobot-v1 | Pendulum-v1 | MountainCarContinuous-v0 |
-|----------|--------------|----------------|------------|--------------------|--------------------------|
-| ARS      | :heavy_check_mark: | :heavy_check_mark:  | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |
-| A2C      | :heavy_check_mark: | :heavy_check_mark:  | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |
-| PPO      | :heavy_check_mark: | :heavy_check_mark:  | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |
-| DQN      | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | N/A                | N/A |
-| QR-DQN   | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | N/A                | N/A |
-| DDPG     |  N/A |  N/A  | N/A | :heavy_check_mark: | :heavy_check_mark: |
-| SAC      |  N/A |  N/A  | N/A | :heavy_check_mark: | :heavy_check_mark: |
-| TD3      |  N/A |  N/A  | N/A | :heavy_check_mark: | :heavy_check_mark: |
-| TQC      |  N/A |  N/A  | N/A | :heavy_check_mark: | :heavy_check_mark: |
-| TRPO     | :heavy_check_mark:  | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |
-
-
-### Box2D Environments
-
-|  RL Algo |  BipedalWalker-v3 | LunarLander-v2 | LunarLanderContinuous-v2 |  BipedalWalkerHardcore-v3 | CarRacing-v0 |
-|----------|--------------|----------------|------------|--------------|--------------------------|
-| ARS      |  | :heavy_check_mark: | | :heavy_check_mark: | |
-| A2C      | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | |
-| PPO      | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | |
-| DQN      | N/A | :heavy_check_mark: | N/A | N/A | N/A |
-| QR-DQN   | N/A | :heavy_check_mark: | N/A | N/A | N/A |
-| DDPG     | :heavy_check_mark: | N/A | :heavy_check_mark: | | |
-| SAC      | :heavy_check_mark: | N/A | :heavy_check_mark: | :heavy_check_mark: | |
-| TD3      | :heavy_check_mark: | N/A | :heavy_check_mark: | :heavy_check_mark: | |
-| TQC      | :heavy_check_mark: | N/A | :heavy_check_mark: | :heavy_check_mark: | |
-| TRPO     | | :heavy_check_mark: | :heavy_check_mark: | | |
-
-### PyBullet Environments
-
-See https://github.com/bulletphysics/bullet3/tree/master/examples/pybullet/gym/pybullet_envs.
-Similar to [MuJoCo Envs](https://gym.openai.com/envs/#mujoco) but with a ~free~ (MuJoCo 2.1.0+ is now free!) easy to install simulator: pybullet. We are using `BulletEnv-v0` version.
-
-Note: those environments are derived from [Roboschool](https://github.com/openai/roboschool) and are harder than the Mujoco version (see [Pybullet issue](https://github.com/bulletphysics/bullet3/issues/1718#issuecomment-393198883))
-
-|  RL Algo |  Walker2D | HalfCheetah | Ant | Reacher |  Hopper | Humanoid |
-|----------|-----------|-------------|-----|---------|---------|----------|
-| ARS      |  |  |  |  |  | |
-| A2C      | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | |
-| PPO      | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | |
-| DDPG     | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | |
-| SAC      | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | |
-| TD3      | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | |
-| TQC      | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | |
-| TRPO     | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | |
-
-PyBullet Envs (Continued)
-
-|  RL Algo |  Minitaur | MinitaurDuck | InvertedDoublePendulum | InvertedPendulumSwingup |
-|----------|-----------|-------------|-----|---------|
-| A2C      | | | | |
-| PPO      | | | | |
-| DDPG     | | | | |
-| SAC      | | | | |
-| TD3      | | | | |
-| TQC      | | | | |
-
-### MuJoCo Environments
-
-|  RL Algo |  Walker2d | HalfCheetah | Ant | Swimmer |  Hopper | Humanoid |
-|----------|-----------|-------------|-----|---------|---------|----------|
-| ARS      | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark:  | :heavy_check_mark: | :heavy_check_mark: |  |
-| A2C      | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |
-| PPO      | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | |
-| DDPG     |  |  |  |  |  | |
-| SAC      | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |
-| TD3      | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |
-| TQC      | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |
-| TRPO      | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |  |
-
-### Robotics Environments
-
-See https://gym.openai.com/envs/#robotics and https://github.com/DLR-RM/rl-baselines3-zoo/pull/71
-
-MuJoCo version: 1.50.1.0
-Gym version: 0.18.0
-
-We used the v1 environments.
-
-|  RL Algo |  FetchReach | FetchPickAndPlace | FetchPush | FetchSlide |
-|----------|-------------|-------------------|-----------|------------|
-| HER+TQC  | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |
-
-
-### Panda robot Environments
-
-See https://github.com/qgallouedec/panda-gym/.
-
-Similar to [MuJoCo Robotics Envs](https://gym.openai.com/envs/#robotics) but with a ~free~ easy to install simulator: pybullet.
-
-We used the v1 environments.
-
-|  RL Algo |  PandaReach | PandaPickAndPlace | PandaPush | PandaSlide | PandaStack |
-|----------|-------------|-------------------|-----------|------------|------------|
-| HER+TQC | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |
-
-
-### MiniGrid Envs
-
-See https://github.com/Farama-Foundation/Minigrid.
-A simple, lightweight and fast Gym environments implementation of the famous gridworld.
-
-| RL Algo | Empty-Random-5x5   | FourRooms          | DoorKey-5x5        | MultiRoom-N4-S5    | Fetch-5x5-N2       | GoToDoor-5x5       | PutNear-6x6-N2     | RedBlueDoors-6x6   | LockedRoom         | KeyCorridorS3R1    | Unlock             | ObstructedMaze-2Dlh |
-| ------- | ------------------ | ------------------ | ------------------ | ------------------ | ------------------ | ------------------ | ------------------ | ------------------ | ------------------ | ------------------ | ------------------ | ------------------- |
-| A2C     |                    |                    |                    |                    |                    |                    |                    |                    |                    |                    |                    |                     |
-| PPO     | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark:  |
-| DQN     |                    |                    |                    |                    |                    |                    |                    |                    |                    |                    |                    |                     |
-| QR-DQN  |                    |                    |                    |                    |                    |                    |                    |                    |                    |                    |                    |                     |
-| TRPO    |                    |                    |                    |                    |                    |                    |                    |                    |                    |                    |                    |                     |
-
-There are 22 environment groups (variations for each) in total.
-
+Everything that has to do with the "benchmarks" from Stable Baselines 3 Zoo has been removed (trained agents, scripts to replicate the training, tuned hyperparameter settings, data, videos of trained agents). Since it was only trained on one seed each the data is not very expressive anyways.
 
 ## Colab Notebook: Try it Online!
 
@@ -270,10 +111,9 @@ sys.argv = ["python", "--algo", "ppo", "--env", "MountainCar-v0"]
 train()
 ```
 
-
 ## Tests
 
-To run tests, first install pytest, then:
+To run tests (removed), first install pytest, then:
 ```
 make pytest
 ```
@@ -283,10 +123,9 @@ Same for type checking with pytype:
 make type
 ```
 
-
 ## Citing the Project
 
-To cite this repository in publications:
+To cite this repository in publications (might be relevant if we come up with a paper-worthy idea):
 
 ```bibtex
 @misc{rl-zoo3,
@@ -298,11 +137,3 @@ To cite this repository in publications:
   howpublished = {\url{https://github.com/DLR-RM/rl-baselines3-zoo}},
 }
 ```
-
-## Contributing
-
-If you trained an agent that is not present in the RL Zoo, please submit a Pull Request (containing the hyperparameters and the score too).
-
-## Contributors
-
-We would like to thank our contributors: [@iandanforth](https://github.com/iandanforth), [@tatsubori](https://github.com/tatsubori) [@Shade5](https://github.com/Shade5) [@mcres](https://github.com/mcres), [@ernestum](https://github.com/ernestum), [@qgallouedec](https://github.com/qgallouedec)
