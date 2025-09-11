@@ -30,7 +30,7 @@ Select it for your workspace, and activate it via:
 
 ```
 source venv/bin/activate
-´´´
+```
 
 Install the necessary requirements:
 
