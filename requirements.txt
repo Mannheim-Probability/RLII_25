@@ -1,14 +1,19 @@
 gym==0.26.2
 stable-baselines3[extra,tests,docs]>=2.6.1a1,<3.0
+sb3-contrib>=2.2.0a8,<3.0
 box2d-py==2.3.8
-pybullet_envs_gymnasium>=0.6.0
-# minigrid
+# pybullet_envs_gymnasium>=0.6.0
+minigrid
 cloudpickle>=2.2.1
 # Optuna auto
 optunahub>=0.2.0
 # optuna plots:
 plotly
 # need to upgrade to gymnasium:
-# panda-gym~=3.0.1
 wandb
 moviepy>=1.0.0
+seaborn==0.13.2
+huggingface_sb3>=3.0,<4.0
+rliable>=1.0.5
+pytablewriter~=0.64
+scikit-optimize==0.10.2
