@@ -1,0 +1,799 @@
+{
+    "folders": [
+        {
+            "path": "."
+        }
+    ],
+    "launch": {
+        "version": "0.0.2",
+        "configurations":[
+            {
+                "name": "Ex: Train",
+                "type": "debugpy",
+                "request": "launch",
+                "program": "${workspaceFolder}/train.py",
+                "args": [
+                    "--algo", "qrdqn",
+                    "--env", "AsterixNoFrameskip-v4",
+                    "--eval-freq", "50000",
+                    "--log-interval", "50",
+                    "--eval-episodes", "10",
+                    "--n-eval-envs", "10",
+                    "--seed", "1",
+                    "-f", "results_temp/example_project/param_config1",
+                    "-tb", "results_temp/tbs/example_project/param_config1",
+                    "--verbose", "1",
+                    "--uuid"
+                ],
+                "console": "integratedTerminal",
+                "justMyCode": false,
+                "pythonArgs": [
+                    "-Xfrozen_modules=off"
+                ],
+                "env": {
+                    "PYTHONPATH": "${workspaceFolder}",
+                    "PYDEVD_DISABLE_FILE_VALIDATION": "1"
+                }
+            },
+            {
+                "name": "Ex: Enjoy",
+                "type": "debugpy",
+                "request": "launch",
+                "program": "${workspaceFolder}/enjoy.py",
+                "args": [
+                    "--algo", "qrdqn",
+                    "--env", "AsterixNoFrameskip-v4",
+                    "-f", "demonstration_models/atari",
+                    "-n", "4000",
+                    "--load-best",
+                    "--seed", "1866447363",
+                    "-P"
+                ],
+                "console": "integratedTerminal",
+                "justMyCode": false,
+                "pythonArgs": [
+                    "-Xfrozen_modules=off"
+                ],
+                "env": {
+                    "PYTHONPATH": "${workspaceFolder}",
+                    "PYDEVD_DISABLE_FILE_VALIDATION": "1"
+                }
+            },
+            {
+                "name": "Ex: All Plots",
+                "type": "debugpy",
+                "request": "launch",
+                "program": "${workspaceFolder}/rl_zoo3/plots/all_plots.py",
+                "args": [
+                    "-a", "qrdqn", "c51",
+                    "-e", "AsterixNoFrameskip-v4", "DemonAttackNoFrameskip-v4",
+                    "-k", "results",
+                    "-max", "20000000",
+                    "-min", "19999999",
+                    "-f", "plots/results_to_plot/print_example",
+                    "-o", "plots/exampleproject/all_plots_results",
+                ],
+                "console": "integratedTerminal",
+                "justMyCode": false,
+                "pythonArgs": [
+                    "-Xfrozen_modules=off"
+                ],
+                "env": {
+                    "PYTHONPATH": "${workspaceFolder}",
+                    "PYDEVD_DISABLE_FILE_VALIDATION": "1"
+                }
+            },
+            {
+                "name": "Ex: Plot train",
+                "type": "debugpy",
+                "request": "launch",
+                "program": "${workspaceFolder}/rl_zoo3/plots/plot_train.py",
+                "args": [
+                    "-a", "qrdqn",
+                    "-e", "AsterixNoFrameskip-v4", "DemonAttackNoFrameskip-v4",
+                    "-max", "20000000",
+                    "-f", "plots/results_to_plot/print_example",
+                    "-w", "20"
+                ],
+                "console": "integratedTerminal",
+                "justMyCode": false,
+                "pythonArgs": [
+                    "-Xfrozen_modules=off"
+                ],
+                "env": {
+                    "PYTHONPATH": "${workspaceFolder}",
+                    "PYDEVD_DISABLE_FILE_VALIDATION": "1"
+                }
+            },
+            {
+                "name": "Ex: Plot from file",
+                "type": "debugpy",
+                "request": "launch",
+                "program": "${workspaceFolder}/rl_zoo3/plots/plot_from_file.py",
+                "args": [
+                    "-i", "plots/exampleproject/all_plots_results",
+                    "-o", "plots/exampleproject/sb_plots_example/plot_from_file.svg",
+                    "-l", "QRDQN", "C51"
+                ],
+                "console": "integratedTerminal",
+                "justMyCode": false,
+                "pythonArgs": [
+                    "-Xfrozen_modules=off"
+                ],
+                "env": {
+                    "PYTHONPATH": "${workspaceFolder}",
+                    "PYDEVD_DISABLE_FILE_VALIDATION": "1"
+                }
+            },
+            {
+                "name": "Ex: Plot from file rliable",
+                "type": "debugpy",
+                "request": "launch",
+                "program": "${workspaceFolder}/rl_zoo3/plots/plot_from_file.py",
+                "args": [
+                    "-i", "plots/exampleproject/all_plots_results",
+                    "-o", "plots/exampleproject/rliable_plots_example/plot_from_file_rliable.svg",
+                    "-l", "QRDQN", "C51",
+                    "-b", "-r", "-vs", "-iqm"
+                ],
+                "console": "integratedTerminal",
+                "justMyCode": false,
+                "pythonArgs": [
+                    "-Xfrozen_modules=off"
+                ],
+                "env": {
+                    "PYTHONPATH": "${workspaceFolder}",
+                    "PYDEVD_DISABLE_FILE_VALIDATION": "1"
+                }
+            },
+            {
+                "name": "Ex: Plot from file one fig",
+                "type": "debugpy",
+                "request": "launch",
+                "program": "${workspaceFolder}/rl_zoo3/plots/plot_from_file_one_fig.py",
+                "args": [
+                    "-i", "plots/exampleproject/all_plots_results",
+                    "-o", "plots/exampleproject/custom_plots_example/plot_from_file_one_fig.svg",
+                    "-l", "QRDQN", "C51"
+                ],
+                "console": "integratedTerminal",
+                "justMyCode": false,
+                "pythonArgs": [
+                    "-Xfrozen_modules=off"
+                ],
+                "env": {
+                    "PYTHONPATH": "${workspaceFolder}",
+                    "PYDEVD_DISABLE_FILE_VALIDATION": "1"
+                }
+            },
+            {
+                "name": "Ex: Plot from file one graph",
+                "type": "debugpy",
+                "request": "launch",
+                "program": "${workspaceFolder}/rl_zoo3/plots/plot_from_file_one_graph.py",
+                "args": [
+                    "-i", "plots/exampleproject/all_plots_results",
+                    "-o", "plots/exampleproject/custom_plots_example/plot_from_file_one_graph.svg",
+                    "-l", "QRDQN", "C51"
+                ],
+                "console": "integratedTerminal",
+                "justMyCode": false,
+                "pythonArgs": [
+                    "-Xfrozen_modules=off"
+                ],
+                "env": {
+                    "PYTHONPATH": "${workspaceFolder}",
+                    "PYDEVD_DISABLE_FILE_VALIDATION": "1"
+                }
+            },
+            {
+                "name": "Dev-run: Train dev-run",
+                "type": "debugpy",
+                "request": "launch",
+                "program": "${workspaceFolder}/train.py",
+                "args": [
+                    "--algo", "${input:algorithm}",
+                    "--env", "${input:environment}",
+                    "--hyperparams", "buffer_size: 100", "n_timesteps:1000", "learning_starts: 100",
+                    "--eval-freq", "100",
+                    "--log-interval", "100",
+                    "--eval-episodes", "5",
+                    "--n-eval-envs", "2",
+                    "--seed", "1",
+                    "-f", "results_temp/${input:project_name}/dev_run/dev_run1",
+                    "-tb", "results_temp/tbs/${input:project_name}/dev_run/dev_run1",
+                    "--verbose", "1",
+                    "--uuid"
+                ],
+                "console": "integratedTerminal",
+                "justMyCode": false,
+                "pythonArgs": [
+                    "-Xfrozen_modules=off"
+                ],
+                "env": {
+                    "PYTHONPATH": "${workspaceFolder}",
+                    "PYDEVD_DISABLE_FILE_VALIDATION": "1"
+                }
+            },
+            {
+                "name": "Dynamic: Train",
+                "type": "debugpy",
+                "request": "launch",
+                "program": "${workspaceFolder}/train.py",
+                "args": [
+                    "--algo", "${input:algorithm}",
+                    "--env", "${input:environment}",
+                    "--hyperparams", "buffer_size: 1000000", "learning_starts:100",
+                    "-n", "${input:n_timesteps}",
+                    "--eval-freq", "${input:eval_freq}",
+                    "--log-interval", "50",
+                    "--eval-episodes", "10",
+                    "--n-eval-envs", "10",
+                    "--seed", "${input:seed}",
+                    "-f", "results_temp/${input:project_name}/param_config1",
+                    "-tb", "results_temp/tbs/${input:project_name}/param_config1",
+                    "--verbose", "1",
+                    "--uuid"
+                ],
+                "console": "integratedTerminal",
+                "justMyCode": false,
+                "pythonArgs": [
+                    "-Xfrozen_modules=off"
+                ],
+                "env": {
+                    "PYTHONPATH": "${workspaceFolder}",
+                    "PYDEVD_DISABLE_FILE_VALIDATION": "1"
+                }
+            },
+            {
+                "name": "Dynamic: Enjoy",
+                "type": "debugpy",
+                "request": "launch",
+                "program": "${workspaceFolder}/enjoy.py",
+                "args": [
+                    "--algo", "${input:algorithm}",
+                    "--env", "${input:environment}",
+                    "-f", "demonstration_models/${input:game_type}",
+                    "-n", "${input:n_timesteps_exec}",
+                    "--load-best",
+                    "--seed", "0",
+                    "-P",
+                    "--verbose", "1"
+                ],
+                "console": "integratedTerminal",
+                "justMyCode": false,
+                "pythonArgs": [
+                    "-Xfrozen_modules=off"
+                ],
+                "env": {
+                    "PYDEVD_DISABLE_FILE_VALIDATION": "1"
+                }
+            },
+            {
+                "name": "Dynamic: All Plots",
+                "type": "debugpy",
+                "request": "launch",
+                "program": "${workspaceFolder}/rl_zoo3/plots/all_plots.py",
+                "args": [
+                    "-a", "${input:algorithm1}", "${input:algorithm2}",
+                    "-e", "${input:environment1}", "${input:environment2}",
+                    "-k", "${input:key}",
+                    "-max", "${input:max}",
+                    "-min", "${input:min}",
+                    "-f", "${input:path_to_plot}",
+                    "-o", "plots/${input:project_name}/${input:which_plots}_${input:key}",
+                ],
+                "console": "integratedTerminal",
+                "justMyCode": false,
+                "pythonArgs": [
+                    "-Xfrozen_modules=off"
+                ],
+                "env": {
+                    "PYTHONPATH": "${workspaceFolder}",
+                    "PYDEVD_DISABLE_FILE_VALIDATION": "1"
+                }
+            },
+            {
+                "name": "Dynamic: Plot train",
+                "type": "debugpy",
+                "request": "launch",
+                "program": "${workspaceFolder}/rl_zoo3/plots/plot_train.py",
+                "args": [
+                    "-a", "${input:algorithm}",
+                    "-e", "${input:environment1}", "${input:environment2}",
+                    "-max", "${input:max}",
+                    "-f", "${input:path_to_plot}",
+                    "-x", "${input:x}",
+                    "-y", "${input:y}",
+                    "-w", "${input:window_size}"
+                ],
+                "console": "integratedTerminal",
+                "justMyCode": false,
+                "pythonArgs": [
+                    "-Xfrozen_modules=off"
+                ],
+                "env": {
+                    "PYTHONPATH": "${workspaceFolder}",
+                    "PYDEVD_DISABLE_FILE_VALIDATION": "1"
+                }
+            },
+            {
+                "name": "Dynamic: Plot from file",
+                "type": "debugpy",
+                "request": "launch",
+                "program": "${workspaceFolder}/rl_zoo3/plots/plot_from_file.py",
+                "args": [
+                    "-i", "plots/${input:project_name}/${input:which_plots}_${input:key}",
+                    "-o", "plots/${input:project_name}/${input:subproject_name}/plot_from_file.svg",
+                    "-l", "${input:algorithm1_label}", "${input:algorithm2_label}"
+                ],
+                "console": "integratedTerminal",
+                "justMyCode": false,
+                "pythonArgs": [
+                    "-Xfrozen_modules=off"
+                ],
+                "env": {
+                    "PYTHONPATH": "${workspaceFolder}",
+                    "PYDEVD_DISABLE_FILE_VALIDATION": "1"
+                }
+            },
+            {
+                "name": "Dynamic: Plot from file rliable",
+                "type": "debugpy",
+                "request": "launch",
+                "program": "${workspaceFolder}/rl_zoo3/plots/plot_from_file.py",
+                "args": [
+                    "-i", "plots/${input:project_name}/${input:which_plots}_${input:key}",
+                    "-o", "plots/${input:project_name}/${input:subproject_name}/plot_from_file_rliable.svg",
+                    "-l", "${input:algorithm1_label}", "${input:algorithm2_label}",
+                    "-ci", "${input:ci}",
+                    "-r", "-vs", "-iqm", "-b"
+                ],
+                "console": "integratedTerminal",
+                "justMyCode": false,
+                "pythonArgs": [
+                    "-Xfrozen_modules=off"
+                ],
+                "env": {
+                    "PYTHONPATH": "${workspaceFolder}",
+                    "PYDEVD_DISABLE_FILE_VALIDATION": "1"
+                }
+            },
+            {
+                "name": "Dynamic: Plot from file one fig",
+                "type": "debugpy",
+                "request": "launch",
+                "program": "${workspaceFolder}/rl_zoo3/plots/plot_from_file_one_fig.py",
+                "args": [
+                    "-i", "plots/${input:project_name}/${input:which_plots}_${input:key}",
+                    "-o", "plots/${input:project_name}/${input:subproject_name}/plot_from_file_one_fig.svg",
+                    "-l", "${input:algorithm1_label}", "${input:algorithm2_label}",
+                ],
+                "console": "integratedTerminal",
+                "justMyCode": false,
+                "pythonArgs": [
+                    "-Xfrozen_modules=off"
+                ],
+                "env": {
+                    "PYTHONPATH": "${workspaceFolder}",
+                    "PYDEVD_DISABLE_FILE_VALIDATION": "1"
+                }
+            },
+            {
+                "name": "Dynamic: Plot from file one graph",
+                "type": "debugpy",
+                "request": "launch",
+                "program": "${workspaceFolder}/rl_zoo3/plots/plot_from_file_one_graph.py",
+                "args": [
+                    "-i", "plots/${input:project_name}/${input:which_plots}_${input:key}",
+                    "-o", "plots/${input:project_name}/${input:subproject_name}/plot_from_file_one_graph.svg",
+                    "-l", "${input:algorithm1_label}", "${input:algorithm2_label}",
+                ],
+                "console": "integratedTerminal",
+                "justMyCode": false,
+                "pythonArgs": [
+                    "-Xfrozen_modules=off"
+                ],
+                "env": {
+                    "PYTHONPATH": "${workspaceFolder}",
+                    "PYDEVD_DISABLE_FILE_VALIDATION": "1"
+                }
+            },
+            {
+                "name": "Dynamic: All Plots",
+                "type": "debugpy",
+                "request": "launch",
+                "program": "${workspaceFolder}/rl_zoo3/plots/all_plots.py",
+                "args": [
+                    "-a", "tqc","atqc",
+                    "-e", "Hopper-v4",
+                    "-max", "5000000",
+                    "-min", "4999999",
+                    "-f", "/Users/benediktwille/Documents/Projekte/Working RL-Repos/RL-Mannheim/plots/results_to_plot3/tqc1", "/Users/benediktwille/Documents/Projekte/Working RL-Repos/RL-Mannheim/plots/results_to_plot/TQC_Baseline", "/Users/benediktwille/Documents/Projekte/Working RL-Repos/RL-Mannheim/plots/results_to_plot3/tqc3", "/Users/benediktwille/Documents/Projekte/Working RL-Repos/RL-Mannheim/plots/results_to_plot3/tqc4", "/Users/benediktwille/Documents/Projekte/Working RL-Repos/RL-Mannheim/plots/results_to_plot6/atqc1", "/Users/benediktwille/Documents/Projekte/Working RL-Repos/RL-Mannheim/plots/results_to_plot6/atqc2", "/Users/benediktwille/Documents/Projekte/Working RL-Repos/RL-Mannheim/plots/results_to_plot6/atqc3", "/Users/benediktwille/Documents/Projekte/Working RL-Repos/RL-Mannheim/plots/results_to_plot6/atqc4",
+                    "-o", "plots/atqc_second_try/sanity_check",
+                ],
+                "console": "integratedTerminal",
+                "justMyCode": false,
+                "pythonArgs": [
+                    "-Xfrozen_modules=off"
+                ],
+                "env": {
+                    "PYTHONPATH": "${workspaceFolder}",
+                    "PYDEVD_DISABLE_FILE_VALIDATION": "1"
+                }
+            },
+            {
+                "name": "Dynamic: Plot from file",
+                "type": "debugpy",
+                "request": "launch",
+                "program": "${workspaceFolder}/rl_zoo3/plots/plot_from_file.py",
+                "args": [
+                    "-i", "plots/atqc_second_try/sanity_check.pkl",
+                    "-o", "plots/atqc_second_try/sanity_check.svg",
+                    "-l", "tqc1", "tqc2", "tqc3", "tqc4", "atqc1", "atqc2", "atqc3", "atqc4",
+                ],
+                "console": "integratedTerminal",
+                "justMyCode": false,
+                "pythonArgs": [
+                    "-Xfrozen_modules=off"
+                ],
+                "env": {
+                    "PYTHONPATH": "${workspaceFolder}",
+                    "PYDEVD_DISABLE_FILE_VALIDATION": "1"
+                }
+            },
+            {
+                "name": "Dynamic: Train dev-run ATQC",
+                "type": "debugpy",
+                "request": "launch",
+                "program": "${workspaceFolder}/train.py",
+                "args": [
+                    "--algo", "atqc",
+                    "--env", "Humanoid-v4",
+                    "--hyperparams", "buffer_size: 100", "n_timesteps:1000", "learning_starts: 0", "top_quantiles_to_drop_per_net_tuple:(2,)", "top_qunatiles_to_drop_per_net_interval_bounds:()",
+                    "--eval-freq", "100",
+                    "--log-interval", "100",
+                    "--eval-episodes", "5",
+                    "--n-eval-envs", "2",
+                    "--seed", "1",
+                    "-f", "results_temp/developing/atqc_tqc/dev_run/dev_run1",
+                    "-tb", "results_temp/tbs/developing/atqc_tqc/dev_run/dev_run1",
+                    "--verbose", "1",
+                    "--uuid"
+                ],
+                "console": "integratedTerminal",
+                "justMyCode": false,
+                "pythonArgs": [
+                    "-Xfrozen_modules=off"
+                ],
+                "env": {
+                    "PYTHONPATH": "${workspaceFolder}",
+                    "PYDEVD_DISABLE_FILE_VALIDATION": "1"
+                }
+            },
+            {
+                "name": "Dynamic: Train dev-run TQC",
+                "type": "debugpy",
+                "request": "launch",
+                "program": "${workspaceFolder}/train.py",
+                "args": [
+                    "--algo", "tqc",
+                    "--env", "Humanoid-v4",
+                    "--hyperparams", "buffer_size: 100", "n_timesteps:1000", "learning_starts: 0", "top_quantiles_to_drop_per_net:2", "policy_kwargs:{'net_arch': {'pi': [256, 256], 'qf': [512, 512, 512]}, 'use_sde': False}",
+                    "--eval-freq", "100",
+                    "--log-interval", "100",
+                    "--eval-episodes", "5",
+                    "--n-eval-envs", "2",
+                    "--seed", "1",
+                    "-f", "results_temp/developing/atqc_tqc/dev_run/dev_run1",
+                    "-tb", "results_temp/tbs/developing/atqc_tqc/dev_run/dev_run1",
+                    "--verbose", "1",
+                    "--uuid"
+                ],
+                "console": "integratedTerminal",
+                "justMyCode": false,
+                "pythonArgs": [
+                    "-Xfrozen_modules=off"
+                ],
+                "env": {
+                    "PYTHONPATH": "${workspaceFolder}",
+                    "PYDEVD_DISABLE_FILE_VALIDATION": "1"
+                }
+            },
+            {
+                "name": "Dynamic: All Plots",
+                "type": "debugpy",
+                "request": "launch",
+                "program": "${workspaceFolder}/rl_zoo3/plots/all_plots.py",
+                "args": [
+                    "-a", "atqc", "tqc",
+                    "-e", "Hopper-v4",
+                    "-f", "/Users/benediktwille/Documents/Projekte/Working RL-Repos/RL-Mannheim/results_temp2/atqc_second_try/atqc",
+                    "-o", "results_temp2/results_temp2",
+                ],
+                "console": "integratedTerminal",
+                "justMyCode": false,
+                "pythonArgs": [
+                    "-Xfrozen_modules=off"
+                ],
+                "env": {
+                    "PYTHONPATH": "${workspaceFolder}",
+                    "PYDEVD_DISABLE_FILE_VALIDATION": "1"
+                }
+            },
+            {
+                "name": "Dynamic: Plot from file",
+                "type": "debugpy",
+                "request": "launch",
+                "program": "${workspaceFolder}/rl_zoo3/plots/plot_from_file.py",
+                "args": [
+                    "-i", "results_temp2/results_temp2.pkl",
+                    "-o", "results_temp2/results_temp2.svg",
+                    "-l", "ATQC", "TQC"
+                ],
+                "console": "integratedTerminal",
+                "justMyCode": false,
+                "pythonArgs": [
+                    "-Xfrozen_modules=off"
+                ],
+                "env": {
+                    "PYTHONPATH": "${workspaceFolder}",
+                    "PYDEVD_DISABLE_FILE_VALIDATION": "1"
+                }
+            },
+            {
+                "name": "Dynamic: Train proper run dev ATQC",
+                "type": "debugpy",
+                "request": "launch",
+                "program": "${workspaceFolder}/train.py",
+                "args": [
+                    "--algo", "atqc",
+                    "--env", "Humanoid-v4",
+                    "--hyperparams", "top_quantiles_to_drop_per_net_tuple:(2,)", "top_qunatiles_to_drop_per_net_interval_bounds:()",
+                    "--eval-freq", "1000",
+                    "--log-interval", "5000",
+                    "--eval-episodes", "5",
+                    "--n-eval-envs", "2",
+                    "--seed", "1",
+                    "-f", "results_temp/developing/atqc_tqc/dev_run_big/dev_run1",
+                    "-tb", "results_temp/tbs/developing/atqc_tqc/dev_run_big/dev_run1",
+                    "--verbose", "1",
+                    "--uuid"
+                ],
+                "console": "integratedTerminal",
+                "justMyCode": false,
+                "pythonArgs": [
+                    "-Xfrozen_modules=off"
+                ],
+                "env": {
+                    "PYTHONPATH": "${workspaceFolder}",
+                    "PYDEVD_DISABLE_FILE_VALIDATION": "1"
+                }
+            },
+            {
+                "name": "Dynamic: Train proper run dev TQC",
+                "type": "debugpy",
+                "request": "launch",
+                "program": "${workspaceFolder}/train.py",
+                "args": [
+                    "--algo", "tqc",
+                    "--env", "Humanoid-v4",
+                    "--hyperparams", "top_quantiles_to_drop_per_net:2", "policy_kwargs:{'net_arch': {'pi': [256, 256], 'qf': [512, 512, 512]}, 'use_sde': False}",
+                    "--eval-freq", "1000",
+                    "--log-interval", "5000",
+                    "--eval-episodes", "5",
+                    "--n-eval-envs", "2",
+                    "--seed", "1",
+                    "-f", "results_temp/developing/atqc_tqc/dev_run_big/dev_run1",
+                    "-tb", "results_temp/tbs/developing/atqc_tqc/dev_run_big/dev_run1",
+                    "--verbose", "1",
+                    "--uuid"
+                ],
+                "console": "integratedTerminal",
+                "justMyCode": false,
+                "pythonArgs": [
+                    "-Xfrozen_modules=off"
+                ],
+                "env": {
+                    "PYTHONPATH": "${workspaceFolder}",
+                    "PYDEVD_DISABLE_FILE_VALIDATION": "1"
+                }
+            },
+            {
+                "name": "Dev-run: Train vti_qrdqn",
+                "type": "debugpy",
+                "request": "launch",
+                "program": "${workspaceFolder}/train.py",
+                "args": [
+                    "--algo", "vti_qrdqn",
+                    "--env", "AsterixNoFrameskip-v4",
+                    "--hyperparams", "buffer_size: 100", "n_timesteps:1000", "learning_starts: 100", "target_update_intervals:[100,200,300,100]", "exploration_scheme:'inverse'",
+                    "--eval-freq", "100",
+                    "--log-interval", "100",
+                    "--eval-episodes", "5",
+                    "--n-eval-envs", "2",
+                    "--seed", "1",
+                    "-f", "results_temp/testvti_qrdqn/dev_run/dev_run1",
+                    "-tb", "results_temp/tbs/testvti_qrdqn/dev_run/dev_run1",
+                    "--verbose", "1",
+                    "--uuid"
+                ],
+                "console": "integratedTerminal",
+                "justMyCode": false,
+                "pythonArgs": [
+                    "-Xfrozen_modules=off"
+                ],
+                "env": {
+                    "PYTHONPATH": "${workspaceFolder}",
+                    "PYDEVD_DISABLE_FILE_VALIDATION": "1"
+                }
+            },
+            {
+                "name": "Dev-run: Train qrdqn",
+                "type": "debugpy",
+                "request": "launch",
+                "program": "${workspaceFolder}/train.py",
+                "args": [
+                    "--algo", "qrdqn",
+                    "--env", "AsterixNoFrameskip-v4",
+                    "--hyperparams", "buffer_size: 100", "n_timesteps:1000", "learning_starts: 100", "target_update_interval:100",
+                    "--eval-freq", "100",
+                    "--log-interval", "100",
+                    "--eval-episodes", "5",
+                    "--n-eval-envs", "2",
+                    "--seed", "1",
+                    "-f", "results_temp/testvti_qrdqn/dev_run/dev_run1",
+                    "-tb", "results_temp/tbs/testvti_qrdqn/dev_run/dev_run1",
+                    "--verbose", "1",
+                    "--uuid"
+                ],
+                "console": "integratedTerminal",
+                "justMyCode": false,
+                "pythonArgs": [
+                    "-Xfrozen_modules=off"
+                ],
+                "env": {
+                    "PYTHONPATH": "${workspaceFolder}",
+                    "PYDEVD_DISABLE_FILE_VALIDATION": "1"
+                }
+            }
+        ],
+        "inputs": [
+            {
+                "id": "algorithm",
+                "type": "promptString",
+                "description": "Enter an algorithm (e.g., qrdqn, sac)."
+            },
+            {
+                "id": "algorithm1",
+                "type": "promptString",
+                "description": "Enter an algorithm (e.g., qrdqn, sac)."
+            },
+            {
+                "id": "algorithm2",
+                "type": "promptString",
+                "description": "Enter an algorithm (e.g., qrdqn, sac)."
+            },
+            {
+                "id": "algorithm1_label",
+                "type": "promptString",
+                "description": "Enter an algorithm label (e.g., QRDQN, SAC)."
+            },
+            {
+                "id": "algorithm2_label",
+                "type": "promptString",
+                "description": "Enter an algorithm label (e.g., QRDQN, SAC)."
+            },
+            {
+                "id": "environment",
+                "type": "promptString",
+                "description": "Enter an environment (e.g. AsterixNoFrameskip-v4, Ant-v4)."
+            },
+            {
+                "id": "environment1",
+                "type": "promptString",
+                "description": "Enter an environment (e.g. AsterixNoFrameskip-v4, Ant-v4)."
+            },
+            {
+                "id": "environment2",
+                "type": "promptString",
+                "description": "Enter an environment (e.g. AsterixNoFrameskip-v4, Ant-v4)."
+            },
+            {
+                "id": "project_name",
+                "type": "promptString",
+                "description": "Enter the project name"
+            },
+            {
+                "id": "which_plots",
+                "type": "promptString",
+                "description": "Enter a characterisic feature of which plots are to be done.",
+                "default": "all_plots"
+            },
+            {
+                "id": "subproject_name",
+                "type": "promptString",
+                "description": "Enter the subproject name"
+            },
+            {
+                "id": "n_timesteps",
+                "type": "promptString",
+                "description": "Enter the number of training timesteps",
+                "default": "20000000"
+            },
+            {
+                "id": "n_timesteps_exec",
+                "type": "promptString",
+                "description": "Enter the number of timesteps for the game to be played",
+                "default": "1000"
+            },
+            {
+                "id": "eval_freq",
+                "type": "promptString",
+                "description": "Enter the number of training timesteps after which an evalutation should take place.",
+                "default": "50000"
+            },
+            {
+                "id": "seed",
+                "type": "promptString",
+                "description": "Enter the seed for training and evaluating",
+                "default": "-1"
+            },
+            {
+                "id": "game_type",
+                "type": "promptString",
+                "description": "Enter the type of game you choose (e.g. atari, mujoco).",
+            },
+            {
+                "id": "path_to_plot",
+                "type": "promptString",
+                "description": "Enter the path to the folders containing the data to be plotted."
+            },
+            {
+                "id": "key",
+                "type": "promptString",
+                "description": "Enter the type of data to be aggregated/plotted",
+                "default": "results"
+            },
+            {
+                "id": "max",
+                "type": "promptString",
+                "description": "Enter the maximum timesteps to be contained in the plots.",
+                "default": "20000000",
+            },
+            {
+                "id": "min",
+                "type": "promptString",
+                "description": "Enter the minimum timesteps a run has to have data for to be included in the plots.",
+                "default": "19999999"
+            },
+            {
+                "id": "x",
+                "type": "promptString",
+                "description": "Enter data for x-Axis.",
+                "default": "steps"
+            },
+            {
+                "id": "y",
+                "type": "promptString",
+                "description": "Enter data for y-Axis",
+                "default": "reward"
+            },
+            {
+                "id": "window_size",
+                "type": "promptString",
+                "description": "Enter rolling window size.",
+                "default": "100"
+            },
+            {
+                "id": "ci",
+                "type": "promptString",
+                "description": "Enter the confidence interval size for the rliable plots.",
+                "default": "0.95"
+            }
+        ]
+    },
+    "settings": {
+        "makefile.configureOnOpen": false
+    }
+}
