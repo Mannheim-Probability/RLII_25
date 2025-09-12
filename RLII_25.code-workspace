@@ -13,16 +13,16 @@
                 "request": "launch",
                 "program": "${workspaceFolder}/train.py",
                 "args": [
-                    "--algo", "qrdqn",
+                    "--algo", "ppo",
                     "--env", "AsterixNoFrameskip-v4",
-                    "--eval-freq", "50000",
-                    "--log-interval", "50",
-                    "--eval-episodes", "10",
-                    "--n-eval-envs", "10",
-                    "--seed", "1",
-                    "-f", "logs/example_project/example_1",
+                    "--hyperparams", "n_timesteps:100000",
+                    "--eval-freq", "10000",
+                    "--log-interval", "10000",
+                    "--eval-episodes", "5",
+                    "--n-eval-envs", "2",
+                    "--seed", "3",
+                    "-f", "logs/example_project/example_2",
                     "--verbose", "1",
-                    "--uuid"
                 ],
                 "console": "integratedTerminal",
                 "justMyCode": false,
@@ -40,7 +40,7 @@
                 "request": "launch",
                 "program": "${workspaceFolder}/enjoy.py",
                 "args": [
-                    "--algo", "qrdqn",
+                    "--algo", "ppo",
                     "--env", "AsterixNoFrameskip-v4",
                     "-f", "${input:path_to_model}",
                     "-n", "4000",
@@ -64,13 +64,13 @@
                 "request": "launch",
                 "program": "${workspaceFolder}/rl_zoo3/plots/all_plots.py",
                 "args": [
-                    "-a", "qrdqn",
+                    "-a", "ppo",
                     "-e", "AsterixNoFrameskip-v4",
                     "-k", "results",
-                    "-max", "20000000",
-                    "-min", "19999999",
-                    "-f", "logs/example_project/example_1",
-                    "-o", "plots/example_project/example_1_all_plots",
+                    "-max", "1000",
+                    "-min", "999",
+                    "-f", "logs/example_project/example_2",
+                    "-o", "plots/example_project/example_2_all_plots",
                 ],
                 "console": "integratedTerminal",
                 "justMyCode": false,
@@ -88,11 +88,10 @@
                 "request": "launch",
                 "program": "${workspaceFolder}/rl_zoo3/plots/plot_train.py",
                 "args": [
-                    "-a", "qrdqn",
+                    "-a", "ppo",
                     "-e", "AsterixNoFrameskip-v4",
                     "-max", "20000000",
-                    "-f", "plots/example_project/example_1_all_plots",
-                    "-w", "20"
+                    "-f", "logs/example_project/example_2",
                 ],
                 "console": "integratedTerminal",
                 "justMyCode": false,
@@ -110,9 +109,9 @@
                 "request": "launch",
                 "program": "${workspaceFolder}/rl_zoo3/plots/plot_from_file.py",
                 "args": [
-                    "-i", "plots/example_project/example_1_all_plots",
+                    "-i", "plots/example_project/example_2_all_plots",
                     "-o", "plots/example_project/plot_from_file.svg",
-                    "-l", "QRDQN",
+                    "-l", "ppo",
                 ],
                 "console": "integratedTerminal",
                 "justMyCode": false,
@@ -130,9 +129,9 @@
                 "request": "launch",
                 "program": "${workspaceFolder}/rl_zoo3/plots/plot_from_file.py",
                 "args": [
-                    "-i", "plots/example_project/example_1_all_plots",
+                    "-i", "plots/example_project/example_2_all_plots",
                     "-o", "plots/example_project/plot_from_file_rliable.svg",
-                    "-l", "QRDQN",
+                    "-l", "ppo",
                     "-b", "-r", "-vs", "-iqm"
                 ],
                 "console": "integratedTerminal",
@@ -153,13 +152,13 @@
                 "args": [
                     "--algo", "${input:algorithm}",
                     "--env", "${input:environment}",
-                    "--hyperparams", "buffer_size: 100", "n_timesteps:1000", "learning_starts: 100",
+                    "--hyperparams", "n_timesteps:1000", "learning_starts: 100",
                     "--eval-freq", "100",
                     "--log-interval", "100",
                     "--eval-episodes", "5",
                     "--n-eval-envs", "2",
                     "--seed", "1",
-                    "-f", "results_temp/${input:project_name}/dev_run/dev_run1",
+                    "-f", "logs/${input:project_name}/dev_run/dev_run1",
                     "--verbose", "1",
                     "--uuid"
                 ],
@@ -181,14 +180,14 @@
                 "args": [
                     "--algo", "${input:algorithm}",
                     "--env", "${input:environment}",
-                    "--hyperparams", "buffer_size: 1000000", "learning_starts:100",
+                    "--hyperparams", "learning_starts:100",
                     "-n", "${input:n_timesteps}",
                     "--eval-freq", "${input:eval_freq}",
                     "--log-interval", "50",
                     "--eval-episodes", "10",
                     "--n-eval-envs", "10",
                     "--seed", "${input:seed}",
-                    "-f", "results_temp/${input:project_name}/param_config1",
+                    "-f", "logs/${input:project_name}/param_config1",
                     "--verbose", "1",
                     "--uuid"
                 ],
@@ -321,27 +320,27 @@
             {
                 "id": "algorithm",
                 "type": "promptString",
-                "description": "Enter an algorithm (e.g., qrdqn, sac)."
+                "description": "Enter an algorithm (e.g., ppo, sac)."
             },
             {
                 "id": "algorithm1",
                 "type": "promptString",
-                "description": "Enter an algorithm (e.g., qrdqn, sac)."
+                "description": "Enter an algorithm (e.g., ppo, sac)."
             },
             {
                 "id": "algorithm2",
                 "type": "promptString",
-                "description": "Enter an algorithm (e.g., qrdqn, sac)."
+                "description": "Enter an algorithm (e.g., ppo, sac)."
             },
             {
                 "id": "algorithm1_label",
                 "type": "promptString",
-                "description": "Enter an algorithm label (e.g., QRDQN, SAC)."
+                "description": "Enter an algorithm label (e.g., ppo, SAC)."
             },
             {
                 "id": "algorithm2_label",
                 "type": "promptString",
-                "description": "Enter an algorithm label (e.g., QRDQN, SAC)."
+                "description": "Enter an algorithm label (e.g., ppo, SAC)."
             },
             {
                 "id": "environment",
@@ -454,13 +453,13 @@
                 "id": "path_to_model",
                 "type": "promptString",
                 "description": "Enter the path to the model to be used",
-                "default": "logs/example_project/example_1"
+                "default": "logs/example_project/example_2"
             },
             {
                 "id": "path_to_game_type",
                 "type": "promptString",
                 "description": "Enter the path to the model to be used",
-                "default": "logs/example_project/example_1"
+                "default": "logs/example_project/example_2"
             }
         ]
     },
