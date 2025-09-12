@@ -50,7 +50,8 @@ for idx, trained_model in enumerate(trained_models.keys()):
     # HER is now a replay buffer class
     if algo == "her":
         continue
-
+    
+    # Only update if new algo is Off-policy algo
     if algo in ["dqn", "qrdqn", "ddpg", "sac", "td3", "tqc"]:
         n_envs = 1
         n_timesteps *= args.n_envs

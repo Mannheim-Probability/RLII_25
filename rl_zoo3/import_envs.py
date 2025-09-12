@@ -6,7 +6,8 @@ from gymnasium.envs.registration import register, register_envs
 from rl_zoo3.wrappers import MaskVelocityWrapper
 
 try:
-    import pybullet_envs_gymnasium
+    # import pybullet_envs_gymnasium
+    pass
 except ImportError:
     pass
 
@@ -19,7 +20,8 @@ except ImportError:
     pass
 
 try:
-    import highway_env
+    # import highway_env
+    pass
 except ImportError:
     pass
 else:
@@ -34,17 +36,20 @@ except ImportError:
     pass
 
 try:
-    import gym_donkeycar
+    # import gym_donkeycar
+    pass
 except ImportError:
     pass
 
 try:
-    import panda_gym
+    # import panda_gym
+    pass
 except ImportError:
     pass
 
 try:
-    import rocket_lander_gym
+    # import rocket_lander_gym
+    pass
 except ImportError:
     pass
 

@@ -123,6 +123,7 @@ def enjoy() -> None:  # noqa: C901
 
     print(f"Loading {model_path}")
 
+    # Only update if new algo is Off-policy algo
     # Off-policy algorithm only support one env for now
     off_policy_algos = ["qrdqn", "dqn", "ddpg", "sac", "her", "td3", "tqc"]
 
