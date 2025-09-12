@@ -152,7 +152,7 @@
                 "args": [
                     "--algo", "${input:algorithm}",
                     "--env", "${input:environment}",
-                    "--hyperparams", "n_timesteps:1000", "learning_starts: 100",
+                    "--hyperparams", "n_timesteps:1000",
                     "--eval-freq", "100",
                     "--log-interval", "100",
                     "--eval-episodes", "5",
