@@ -15,9 +15,9 @@
                 "args": [
                     "--algo", "ppo",
                     "--env", "AsterixNoFrameskip-v4",
-                    "--hyperparams", "n_timesteps:100000",
-                    "--eval-freq", "10000",
-                    "--log-interval", "10000",
+                    "--hyperparams", "n_timesteps:1000",
+                    "--eval-freq", "100",
+                    "--log-interval", "100",
                     "--eval-episodes", "5",
                     "--n-eval-envs", "2",
                     "--seed", "3",
