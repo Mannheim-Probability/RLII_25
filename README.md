@@ -10,6 +10,8 @@ In addition, it includes a collection of tuned hyperparameters for common enviro
 
 Documentation is available online: [https://rl-baselines3-zoo.readthedocs.io/](https://rl-baselines3-zoo.readthedocs.io) (this includes removed features found in the original repo as well).
 
+A partial recording of the introductory session to this repository can be found [https://unimannheimde.sharepoint.com/:v:/s/TeamStochastik/EV8z09NXh3BImPhA04YHYTABSvvwrErPzpOvO5xNRrMtRA?e=mZpRLr](here):
+
 ## Installation
 
 This installation is written and tested for MacOS. For Windows, the steps are similar but might involve slightly different programs and commands.
