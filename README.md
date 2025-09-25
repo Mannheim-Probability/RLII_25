@@ -10,7 +10,11 @@ In addition, it includes a collection of tuned hyperparameters for common enviro
 
 Documentation is available online: [https://rl-baselines3-zoo.readthedocs.io/](https://rl-baselines3-zoo.readthedocs.io) (this includes removed features found in the original repo as well).
 
-A partial recording of the introductory session to this repository can be found [here](https://unimannheimde.sharepoint.com/:v:/s/TeamStochastik/EV8z09NXh3BImPhA04YHYTABSvvwrErPzpOvO5xNRrMtRA?e=mZpRLr):
+## Videos of the Lectures
+
+We will be recording some of the lectures due to conflicting schedules of some of the students.
+
+[Lecture 2 (part of it)](https://unimannheimde.sharepoint.com/:v:/s/TeamStochastik/EV8z09NXh3BImPhA04YHYTABSvvwrErPzpOvO5xNRrMtRA?e=mZpRLr):
 
 ## Installation
 
