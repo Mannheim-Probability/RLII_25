@@ -25,7 +25,7 @@ from torch import nn as nn
 
 # custom algos
 from rl_zoo3.custom_algos import (
-    __all__ # Platzhalter!!!
+    EXAMPLE,
 )
 
 ALGOS: dict[str, type[BaseAlgorithm]] = {
@@ -43,6 +43,7 @@ ALGOS: dict[str, type[BaseAlgorithm]] = {
     "trpo": TRPO,
     "ppo_lstm": RecurrentPPO,
     # custom algorithms
+    "example": EXAMPLE,
 }
 
 

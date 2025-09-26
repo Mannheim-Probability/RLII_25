@@ -1,5 +1,5 @@
-# from .example import EXAMPLE
+from .example import EXAMPLE
 
 __all__ = [
-    # EXAMPLE,
+    EXAMPLE,
 ]
