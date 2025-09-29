@@ -14,7 +14,9 @@ Documentation is available online: [https://rl-baselines3-zoo.readthedocs.io/](h
 
 We will be recording some of the lectures due to conflicting schedules of some of the students.
 
-[Lecture 2 (part of it)](https://unimannheimde.sharepoint.com/:v:/s/TeamStochastik/EV8z09NXh3BImPhA04YHYTABSvvwrErPzpOvO5xNRrMtRA?e=mZpRLr):
+[Lecture 2 (part of it)](https://unimannheimde.sharepoint.com/:v:/s/TeamStochastik/EV8z09NXh3BImPhA04YHYTABSvvwrErPzpOvO5xNRrMtRA?e=mZpRLr)
+
+[Lecture 3](https://unimannheimde.sharepoint.com/:v:/s/TeamStochastik/EVV-H8FOI3lImgl_YrISeC4BUpc05JXElaJq5PRlraorig?e=vNfmUs)
 
 ## Installation
 
