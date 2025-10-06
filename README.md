@@ -16,7 +16,7 @@ We will be recording some of the lectures due to conflicting schedules of some o
 
 [Lecture 2 (part of it)](https://unimannheimde.sharepoint.com/:v:/s/TeamStochastik/EV8z09NXh3BImPhA04YHYTABSvvwrErPzpOvO5xNRrMtRA?e=mZpRLr)
 
-[Lecture 3]((https://unimannheimde.sharepoint.com/:v:/s/TeamStochastik/EVV-H8FOI3lImgl_YrISeC4BUpc05JXElaJq5PRlraorig?e=q0QEg9))
+[Lecture 3](https://unimannheimde.sharepoint.com/:v:/s/TeamStochastik/EVV-H8FOI3lImgl_YrISeC4BUpc05JXElaJq5PRlraorig?e=q0QEg9)
 
 ## Installation
 
