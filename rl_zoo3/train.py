@@ -5,6 +5,10 @@ import os
 import time
 import uuid
 
+from rl_zoo3.utils import ALGOS
+from rl_zoo3.custom_algos import EXAMPLE
+ALGOS["example"] = EXAMPLE
+
 import gymnasium as gym
 import numpy as np
 import stable_baselines3 as sb3

@@ -57,7 +57,7 @@ class EXAMPLE(OnPolicyAlgorithm):
     :param rollout_buffer_kwargs: Keyword arguments to pass to the rollout buffer on creation
     :param target_kl: Limit the KL divergence between updates,
         because the clipping is not enough to prevent large update
-        see issue #213 (cf https://github.com/hill-a/stable-baselines/issues/213)
+        see issue #213 (cf https://github.com/hill-a/stable-baselines3/issues/213)
         By default, there is no limit on the kl div.
     :param stats_window_size: Window size for the rollout logging, specifying the number of episodes to average
         the reported success rate, mean episode length, and mean reward over
@@ -194,6 +194,16 @@ class EXAMPLE(OnPolicyAlgorithm):
         # Optional: clip range for the value function
         if self.clip_range_vf is not None:
             clip_range_vf = self.clip_range_vf(self._current_progress_remaining)  # type: ignore[operator]
+
+        # === Einzige Änderung: Advantage mit gamma^t gewichten (t = Schritte seit Episodenstart) ===
+        buf = self.rollout_buffer
+        t = np.zeros(buf.n_envs, dtype=np.int32)
+        weights = np.zeros_like(buf.advantages)  # shape (buffer_size, n_envs)
+        for step in range(buf.buffer_size):
+            t = np.where(buf.episode_starts[step], 0, t + 1)
+            weights[step] = (self.gamma ** t).astype(weights.dtype)
+        buf.advantages *= weights
+        # === Ende der Änderung ===
 
         entropy_losses = []
         pg_losses, value_losses = [], []

@@ -23,10 +23,7 @@ from stable_baselines3.common.vec_env import DummyVecEnv, SubprocVecEnv, VecEnv,
 # For custom activation fn
 from torch import nn as nn
 
-# custom algos
-from rl_zoo3.custom_algos import (
-    EXAMPLE,
-)
+
 
 ALGOS: dict[str, type[BaseAlgorithm]] = {
     "a2c": A2C,
@@ -41,10 +38,16 @@ ALGOS: dict[str, type[BaseAlgorithm]] = {
     "qrdqn": QRDQN,
     "tqc": TQC,
     "trpo": TRPO,
-    "ppo_lstm": RecurrentPPO,
-    # custom algorithms
-    "example": EXAMPLE,
+    "ppo_lstm": RecurrentPPO
 }
+
+# --- Custom-Algorithmen nachträglich registrieren (verhindert Zirkelimporte)
+try:
+    from rl_zoo3.custom_algos.example import EXAMPLE  # importiert NICHT utils
+    ALGOS["example"] = EXAMPLE
+except Exception as e:
+    # Optional: weich tolerieren oder raise; fürs Debuggen:
+    print(f"[rl_zoo3] Hinweis: Custom-Algorithmus 'example' nicht geladen: {e}")
 
 
 def flatten_dict_observations(env: gym.Env) -> gym.Env:

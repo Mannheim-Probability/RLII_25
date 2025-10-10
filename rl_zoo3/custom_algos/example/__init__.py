@@ -1,5 +1,3 @@
-from rl_zoo3.custom_algos.example.example import EXAMPLE
-from stable_baselines3.ppo.policies import CnnPolicy, MlpPolicy, MultiInputPolicy
-
-
-__all__ = ["EXAMPLE", "CnnPolicy", "MlpPolicy", "MultiInputPolicy"]
+# rl_zoo3/custom_algos/example/__init__.py
+from .example import EXAMPLE
+__all__ = ["EXAMPLE"]
