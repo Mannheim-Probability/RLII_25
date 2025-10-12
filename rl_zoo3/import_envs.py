@@ -75,3 +75,34 @@ for env_id in MaskVelocityWrapper.velocity_indices.keys():
         id=f"{name}NoVel-v{version}",
         entry_point=create_no_vel_env(env_id),  # type: ignore[arg-type]
     )
+
+
+
+
+
+###### Miniworld custom added
+
+try:
+    import miniworld  
+except ImportError:
+    pass
+
+####
+
+
+# Register no vel envs
+def create_no_vel_env(env_id: str) -> Callable[[Optional[str]], gym.Env]:
+    def make_env(render_mode: Optional[str] = None) -> gym.Env:
+        env = gym.make(env_id, render_mode=render_mode)
+        env = MaskVelocityWrapper(env)
+        return env
+
+    return make_env
+
+
+for env_id in MaskVelocityWrapper.velocity_indices.keys():
+    name, version = env_id.split("-v")
+    register(
+        id=f"{name}NoVel-v{version}",
+        entry_point=create_no_vel_env(env_id),  # type: ignore[arg-type]
+    )

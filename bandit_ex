@@ -1,0 +1,533 @@
+import numpy as np
+import matplotlib.pyplot as plt
+from typing import List, Tuple
+import torch
+import torch.nn as nn
+import torch.optim as optim
+import torch.nn.functional as F
+from collections import defaultdict
+import random
+
+class MultiArmedBandit:
+    """Stochastic Multi-Armed Bandit with normal distributions"""
+    
+    def __init__(self, means: List[float], std: float = 1.0):
+        self.means = np.array(means)
+        self.std = std
+        self.n_arms = len(means)
+        self.best_arm = np.argmax(means)
+    
+    def pull_arm(self, arm: int) -> float:
+        """Pull an arm and get reward from normal distribution"""
+        return np.random.normal(self.means[arm], self.std)
+
+class TabularSoftmaxPolicy:
+    """Tabular softmax policy for bandit arms"""
+    
+    def __init__(self, n_arms: int, lr: float = 0.01):
+        self.n_arms = n_arms
+        self.logits = np.zeros(n_arms)
+        self.lr = lr
+    
+    def get_probabilities(self) -> np.ndarray:
+        """Get softmax probabilities"""
+        exp_logits = np.exp(self.logits - np.max(self.logits))  # numerical stability
+        return exp_logits / np.sum(exp_logits)
+    
+    def sample_action(self) -> int:
+        """Sample action according to softmax policy"""
+        probs = self.get_probabilities()
+        return np.random.choice(self.n_arms, p=probs)
+    
+    def get_log_prob(self, action: int) -> float:
+        """Get log probability of action"""
+        probs = self.get_probabilities()
+        return np.log(probs[action] + 1e-8)  # numerical stability
+    
+    def update_logits(self, gradients: np.ndarray):
+        """Update logits with gradients"""
+        self.logits += self.lr * gradients
+
+class Critic(nn.Module):
+    """Simple critic network for state value estimation"""
+    
+    def __init__(self, n_arms: int, hidden_size: int = 64):
+        super().__init__()
+        self.network = nn.Sequential(
+            nn.Linear(n_arms, hidden_size),
+            nn.ReLU(),
+            nn.Linear(hidden_size, hidden_size),
+            nn.ReLU(),
+            nn.Linear(hidden_size, 1)
+        )
+    
+    def forward(self, state):
+        return self.network(state)
+
+class REINFORCEAgent:
+    """Standard REINFORCE agent for multi-armed bandit"""
+    
+    def __init__(self, n_arms: int, lr: float = 0.1):
+        self.n_arms = n_arms
+        self.policy = TabularSoftmaxPolicy(n_arms, lr)
+        self.buffer = {'actions': [], 'rewards': []}
+    
+    def select_action(self) -> int:
+        """Select action according to current policy"""
+        return self.policy.sample_action()
+    
+    def store_experience(self, action: int, reward: float):
+        """Store experience"""
+        self.buffer['actions'].append(action)
+        self.buffer['rewards'].append(reward)
+    
+    def update(self):
+        """Update policy using REINFORCE"""
+        if len(self.buffer['actions']) == 0:
+            return
+        
+        actions = np.array(self.buffer['actions'])
+        rewards = np.array(self.buffer['rewards'])
+        
+        # Compute returns (for bandit, this is just the reward)
+        returns = rewards
+        
+        # Normalize returns for stability
+        if len(returns) > 1:
+            returns = (returns - np.mean(returns)) / (np.std(returns) + 1e-8)
+        
+        # Compute policy gradients
+        gradients = np.zeros(self.n_arms)
+        probs = self.policy.get_probabilities()
+        
+        for action, return_val in zip(actions, returns):
+            # REINFORCE gradient: ∇log π(a|s) * R
+            grad = np.zeros(self.n_arms)
+            grad[action] = return_val * (1 - probs[action])  # ∇log π for chosen action
+            for j in range(self.n_arms):
+                if j != action:
+                    grad[j] = -return_val * probs[j]  # ∇log π for other actions
+            gradients += grad
+        
+        gradients /= len(actions)
+        
+        # Update policy
+        self.policy.update_logits(gradients)
+        
+        # Clear buffer
+        self.buffer = {'actions': [], 'rewards': []}
+    
+    def get_best_arm_probability(self, best_arm: int) -> float:
+        """Get probability of selecting the best arm"""
+        probs = self.policy.get_probabilities()
+        return probs[best_arm]
+
+class PPOBanditAgent:
+    """PPO-like agent for multi-armed bandit"""
+    
+    def __init__(self, n_arms: int, policy_lr: float = 0.01, critic_lr: float = 0.001,
+                 clip_range: float = 0.2, n_epochs: int = 10, minibatch_size: int = 64, 
+                 n_minibatches: int = 4, buffer_size: int = None):
+        self.n_arms = n_arms
+        self.policy = TabularSoftmaxPolicy(n_arms, policy_lr)
+        self.critic = Critic(n_arms)
+        self.critic_optimizer = optim.Adam(self.critic.parameters(), lr=critic_lr)
+        
+        self.clip_range = clip_range
+        self.n_epochs = n_epochs
+        self.minibatch_size = minibatch_size
+        self.n_minibatches = n_minibatches
+        
+        # Buffer size determines when to update
+        # If not specified, use minibatch_size * n_minibatches
+        self.buffer_size = buffer_size or (minibatch_size * n_minibatches)
+        
+        print(f"PPO Config: buffer_size={self.buffer_size}, minibatch_size={minibatch_size}, n_minibatches={n_minibatches}")
+        
+        # Experience buffer
+        self.reset_buffer()
+    
+    def reset_buffer(self):
+        """Reset experience buffer"""
+        self.buffer = {
+            'actions': [],
+            'rewards': [],
+            'log_probs': [],
+            'states': [],
+            'values': []
+        }
+    
+    def get_state(self) -> np.ndarray:
+        """Get current state representation (simple bandit state)"""
+        # For bandit, state is just a constant or could be action history
+        return np.ones(self.n_arms) / self.n_arms  # uniform state
+    
+    def select_action(self) -> Tuple[int, float, float]:
+        """Select action and return action, log_prob, and value"""
+        state = self.get_state()
+        action = self.policy.sample_action()
+        log_prob = self.policy.get_log_prob(action)
+        
+        # Get value estimate
+        state_tensor = torch.FloatTensor(state).unsqueeze(0)
+        with torch.no_grad():
+            value = self.critic(state_tensor).item()
+        
+        return action, log_prob, value
+    
+    def store_experience(self, action: int, reward: float, log_prob: float, value: float):
+        """Store experience in buffer"""
+        state = self.get_state()
+        self.buffer['actions'].append(action)
+        self.buffer['rewards'].append(reward)
+        self.buffer['log_probs'].append(log_prob)
+        self.buffer['values'].append(value)
+        self.buffer['states'].append(state)
+    
+    def compute_advantages(self) -> Tuple[np.ndarray, np.ndarray]:
+        """Compute advantages"""
+        rewards = np.array(self.buffer['rewards'])
+        values = np.array(self.buffer['values'])
+        
+        # For bandit problems, returns are just rewards
+        returns = rewards.copy()
+        advantages = returns - values
+        
+        # Normalize advantages
+        if len(advantages) > 1:
+            advantages = (advantages - np.mean(advantages)) / (np.std(advantages) + 1e-8)
+        
+        return advantages, returns
+    
+    def update(self):
+        """Update policy and critic using PPO with configurable mini-batches"""
+        if len(self.buffer['actions']) == 0:
+            return
+        
+        # Compute advantages and returns
+        advantages, returns = self.compute_advantages()
+        old_log_probs = np.array(self.buffer['log_probs'])
+        actions = np.array(self.buffer['actions'])
+        
+        # Convert to tensors
+        states = torch.FloatTensor(np.array(self.buffer['states']))
+        returns_tensor = torch.FloatTensor(returns)
+        advantages_tensor = torch.FloatTensor(advantages)
+        actions_tensor = torch.LongTensor(actions)
+        old_log_probs_tensor = torch.FloatTensor(old_log_probs)
+        
+        dataset_size = len(self.buffer['actions'])
+        
+        print(f"PPO Update: dataset_size={dataset_size}, will create {self.n_minibatches} minibatches of size {self.minibatch_size}")
+        
+        # Training loop
+        for epoch in range(self.n_epochs):
+            # Shuffle data
+            indices = np.random.permutation(dataset_size)
+            
+            # Create mini-batches
+            for minibatch_idx in range(self.n_minibatches):
+                # Calculate start and end indices for this mini-batch
+                start_idx = minibatch_idx * self.minibatch_size
+                end_idx = min((minibatch_idx + 1) * self.minibatch_size, dataset_size)
+                
+                # If we don't have enough data for a full mini-batch, skip or adjust
+                if end_idx - start_idx < self.minibatch_size and minibatch_idx < self.n_minibatches - 1:
+                    # For all but the last mini-batch, we expect full size
+                    # Sample with replacement to fill the mini-batch
+                    minibatch_indices = np.random.choice(indices, size=self.minibatch_size, replace=True)
+                else:
+                    # Use available indices
+                    minibatch_indices = indices[start_idx:end_idx]
+                
+                if len(minibatch_indices) == 0:
+                    continue
+                
+                # Extract mini-batch data
+                mb_states = states[minibatch_indices]
+                mb_actions = actions_tensor[minibatch_indices]
+                mb_old_log_probs = old_log_probs_tensor[minibatch_indices]
+                mb_returns = returns_tensor[minibatch_indices]
+                mb_advantages = advantages_tensor[minibatch_indices]
+                
+                # Update critic
+                mb_values = self.critic(mb_states).squeeze()
+                if mb_values.dim() == 0:  # Handle single sample case
+                    mb_values = mb_values.unsqueeze(0)
+                critic_loss = F.mse_loss(mb_values, mb_returns)
+                
+                self.critic_optimizer.zero_grad()
+                critic_loss.backward()
+                self.critic_optimizer.step()
+                
+                # Update policy
+                # Get current log probabilities for this mini-batch
+                current_log_probs = []
+                for action in mb_actions:
+                    current_log_probs.append(self.policy.get_log_prob(action.item()))
+                current_log_probs = torch.FloatTensor(current_log_probs)
+                
+                # Compute importance ratios
+                ratios = torch.exp(current_log_probs - mb_old_log_probs)
+                
+                # Clip ratios
+                clipped_ratios = torch.clamp(ratios, 1 - self.clip_range, 1 + self.clip_range)
+                
+                # Policy loss
+                policy_loss1 = ratios * mb_advantages
+                policy_loss2 = clipped_ratios * mb_advantages
+                policy_objectives = torch.min(policy_loss1, policy_loss2)
+                
+                # Convert back to numpy for tabular policy update
+                mb_actions_np = mb_actions.numpy()
+                policy_objectives_np = policy_objectives.detach().numpy()
+                
+                # Compute gradients manually for tabular policy
+                gradients = np.zeros(self.n_arms)
+                probs = self.policy.get_probabilities()
+                
+                for i, action in enumerate(mb_actions_np):
+                    objective = policy_objectives_np[i]
+                    # REINFORCE-style gradient computation
+                    grad = np.zeros(self.n_arms)
+                    grad[action] = objective * (1 - probs[action])
+                    for j in range(self.n_arms):
+                        if j != action:
+                            grad[j] = -objective * probs[j]
+                    gradients += grad
+                
+                if len(mb_actions_np) > 0:
+                    gradients /= len(mb_actions_np)
+                    gradients = np.clip(gradients, -1.0, 1.0)  # Gradient clipping
+                    
+                    # Update policy
+                    self.policy.update_logits(gradients)
+    
+    def get_best_arm_probability(self, best_arm: int) -> float:
+        """Get probability of selecting the best arm"""
+        probs = self.policy.get_probabilities()
+        return probs[best_arm]
+
+def train_reinforce_bandit(bandit: MultiArmedBandit, n_episodes: int = 1000, 
+                          lr: float = 0.1, update_frequency: int = 10,
+                          seed: int = None) -> Tuple[REINFORCEAgent, List[float]]:
+    """Train REINFORCE agent on bandit problem"""
+    
+    if seed is not None:
+        np.random.seed(seed)
+        random.seed(seed)
+    
+    agent = REINFORCEAgent(bandit.n_arms, lr=lr)
+    best_arm_probs = []
+    
+    for episode in range(n_episodes):
+        # Select action and get reward
+        action = agent.select_action()
+        reward = bandit.pull_arm(action)
+        
+        # Store experience
+        agent.store_experience(action, reward)
+        
+        # Update policy every update_frequency episodes
+        if (episode + 1) % update_frequency == 0:
+            agent.update()
+        
+        # Track best arm probability
+        best_arm_prob = agent.get_best_arm_probability(bandit.best_arm)
+        best_arm_probs.append(best_arm_prob)
+    
+    return agent, best_arm_probs
+
+def train_ppo_bandit(bandit: MultiArmedBandit, n_episodes: int = 1000, 
+                    n_epochs: int = 10, minibatch_size: int = 64, n_minibatches: int = 4,
+                    buffer_size: int = None, clip_range: float = 0.2,
+                    seed: int = None) -> Tuple[PPOBanditAgent, List[float]]:
+    """Train PPO agent on bandit problem"""
+    
+    if seed is not None:
+        np.random.seed(seed)
+        torch.manual_seed(seed)
+        random.seed(seed)
+    
+    agent = PPOBanditAgent(bandit.n_arms, n_epochs=n_epochs, 
+                          minibatch_size=minibatch_size, n_minibatches=n_minibatches,
+                          buffer_size=buffer_size, clip_range=clip_range)
+    
+    best_arm_probs = []
+    
+    for episode in range(n_episodes):
+        # Select action and get reward
+        action, log_prob, value = agent.select_action()
+        reward = bandit.pull_arm(action)
+        
+        # Store experience
+        agent.store_experience(action, reward, log_prob, value)
+        
+        # Update when buffer is full
+        if len(agent.buffer['actions']) >= agent.buffer_size:
+            agent.update()
+            agent.reset_buffer()
+        
+        # Track best arm probability
+        best_arm_prob = agent.get_best_arm_probability(bandit.best_arm)
+        best_arm_probs.append(best_arm_prob)
+    
+    # Final update if buffer has remaining data
+    if len(agent.buffer['actions']) > 0:
+        agent.update()
+    
+    return agent, best_arm_probs
+
+def run_experiments(n_seeds: int = 5, n_episodes: int = 2000, 
+                   # PPO parameters
+                   n_epochs: int = 10, minibatch_size: int = 32, n_minibatches: int = 4, 
+                   buffer_size: int = None, clip_range: float = 0.2,
+                   # REINFORCE parameters
+                   reinforce_lr: float = 0.1, reinforce_update_freq: int = 10):
+    """Run experiments comparing PPO and REINFORCE across multiple seeds"""
+    
+    # Initialize bandit
+    means = [0.01, 0.0, 0.02, 0.3, 0.4]
+    bandit = MultiArmedBandit(means, std=1.0)
+    
+    print(f"Bandit means: {means}")
+    print(f"Best arm: {bandit.best_arm} (mean = {means[bandit.best_arm]})")
+    print(f"Running {n_seeds} seeds with {n_episodes} episodes each...")
+    print(f"PPO config: minibatch_size={minibatch_size}, n_minibatches={n_minibatches}, buffer_size={buffer_size or minibatch_size * n_minibatches}")
+    print(f"REINFORCE config: lr={reinforce_lr}, update_freq={reinforce_update_freq}")
+    
+    ppo_results = []
+    reinforce_results = []
+    
+    for seed in range(n_seeds):
+        print(f"\nRunning seed {seed + 1}/{n_seeds}")
+        
+        # Train PPO
+        ppo_agent, ppo_probs = train_ppo_bandit(
+            bandit, n_episodes=n_episodes, n_epochs=n_epochs,
+            minibatch_size=minibatch_size, n_minibatches=n_minibatches,
+            buffer_size=buffer_size, clip_range=clip_range, seed=seed
+        )
+        ppo_results.append(ppo_probs)
+        
+        # Train REINFORCE
+        reinforce_agent, reinforce_probs = train_reinforce_bandit(
+            bandit, n_episodes=n_episodes, lr=reinforce_lr,
+            update_frequency=reinforce_update_freq, seed=seed
+        )
+        reinforce_results.append(reinforce_probs)
+        
+        # Print final policies
+        ppo_final_probs = ppo_agent.policy.get_probabilities()
+        reinforce_final_probs = reinforce_agent.policy.get_probabilities()
+        print(f"PPO final probs: {ppo_final_probs.round(3)}")
+        print(f"REINFORCE final probs: {reinforce_final_probs.round(3)}")
+    
+    # Plot results
+    plt.figure(figsize=(15, 10))
+    
+    # Convert to numpy arrays
+    ppo_results = np.array(ppo_results)
+    reinforce_results = np.array(reinforce_results)
+    
+    episodes = np.arange(n_episodes)
+    
+    # Subplot 1: PPO results
+    plt.subplot(2, 2, 1)
+    for i in range(n_seeds):
+        plt.plot(ppo_results[i], alpha=0.3, color='blue', linewidth=1)
+    
+    ppo_mean = np.mean(ppo_results, axis=0)
+    ppo_std = np.std(ppo_results, axis=0)
+    plt.plot(episodes, ppo_mean, color='red', linewidth=2, label='PPO Mean')
+    plt.fill_between(episodes, ppo_mean - ppo_std, ppo_mean + ppo_std, 
+                     alpha=0.2, color='red')
+    
+    plt.title(f'PPO (MB:{minibatch_size}, #MB:{n_minibatches})')
+    plt.xlabel('Episode')
+    plt.ylabel('P(Best Arm)')
+    plt.legend()
+    plt.grid(True, alpha=0.3)
+    plt.ylim(0, 1)
+    
+    # Subplot 2: REINFORCE results
+    plt.subplot(2, 2, 2)
+    for i in range(n_seeds):
+        plt.plot(reinforce_results[i], alpha=0.3, color='green', linewidth=1)
+    
+    reinforce_mean = np.mean(reinforce_results, axis=0)
+    reinforce_std = np.std(reinforce_results, axis=0)
+    plt.plot(episodes, reinforce_mean, color='orange', linewidth=2, label='REINFORCE Mean')
+    plt.fill_between(episodes, reinforce_mean - reinforce_std, reinforce_mean + reinforce_std, 
+                     alpha=0.2, color='orange')
+    
+    plt.title(f'REINFORCE (freq:{reinforce_update_freq})')
+    plt.xlabel('Episode')
+    plt.ylabel('P(Best Arm)')
+    plt.legend()
+    plt.grid(True, alpha=0.3)
+    plt.ylim(0, 1)
+    
+    # Subplot 3: Comparison
+    plt.subplot(2, 2, (3, 4))
+    plt.plot(episodes, ppo_mean, color='red', linewidth=2, label=f'PPO (MB:{minibatch_size}x{n_minibatches})')
+    plt.fill_between(episodes, ppo_mean - ppo_std, ppo_mean + ppo_std, 
+                     alpha=0.2, color='red')
+    
+    plt.plot(episodes, reinforce_mean, color='orange', linewidth=2, label=f'REINFORCE (freq:{reinforce_update_freq})')
+    plt.fill_between(episodes, reinforce_mean - reinforce_std, reinforce_mean + reinforce_std, 
+                     alpha=0.2, color='orange')
+    
+    plt.title('PPO vs REINFORCE Comparison')
+    plt.xlabel('Episode')
+    plt.ylabel('Probability of Selecting Best Arm')
+    plt.legend()
+    plt.grid(True, alpha=0.3)
+    plt.ylim(0, 1)
+    
+    # Add performance statistics
+    ppo_final = ppo_mean[-1]
+    reinforce_final = reinforce_mean[-1]
+    textstr = f'Final Performance:\nPPO: {ppo_final:.3f} ± {ppo_std[-1]:.3f}\nREINFORCE: {reinforce_final:.3f} ± {reinforce_std[-1]:.3f}'
+    props = dict(boxstyle='round', facecolor='wheat', alpha=0.8)
+    plt.text(0.02, 0.98, textstr, transform=plt.gca().transAxes, fontsize=10,
+             verticalalignment='top', bbox=props)
+    
+    plt.tight_layout()
+    plt.show()
+    
+    return ppo_results, reinforce_results, ppo_mean, reinforce_mean
+
+# Run the experiment with configurable PPO mini-batch settings
+if __name__ == "__main__":
+    # Example 1: Small mini-batches
+    print("=== Experiment 1: Small Mini-batches ===")
+    results1 = run_experiments(
+        n_seeds=3,
+        n_episodes=1500,
+        # PPO config
+        n_epochs=5,
+        minibatch_size=16,      # Small mini-batch size
+        n_minibatches=2,        # Few mini-batches
+        buffer_size=32,         # Small buffer (16 * 2)
+        clip_range=0.2,
+        # REINFORCE config
+        reinforce_lr=0.1,
+        reinforce_update_freq=10
+    )
+    
+    # Example 2: Large mini-batches
+    print("\n=== Experiment 2: Large Mini-batches ===")
+    results2 = run_experiments(
+        n_seeds=3,
+        n_episodes=1500,
+        # PPO config  
+        n_epochs=2,
+        minibatch_size=32,      # Large mini-batch size
+        n_minibatches=8,        # Many mini-batches
+        buffer_size=256,        # Large buffer (64 * 8)
+        clip_range=0.2,
+        # REINFORCE config
+        reinforce_lr=0.1,
+        reinforce_update_freq=10
+    )
