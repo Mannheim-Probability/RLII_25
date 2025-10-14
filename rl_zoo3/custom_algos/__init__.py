@@ -1,5 +1,5 @@
-# from .example import EXAMPLE
+from .discounted_ppo import DISCOUNTED_PPO
 
 __all__ = [
-    # EXAMPLE,
+    "DISCOUNTED_PPO",
 ]
