@@ -1,1 +1,1 @@
- python train.py --algo "ppo" --env CartPole-v1  --hyperparams n_timesteps:80000 --eval-freq 100 --log-interval 100 --eval-episodes 5 --n-eval-envs 2 --seed 1 -f logs/example_project/example_1 --verbose 1 --wandb-project-name "RL_2025" --wandb_tags "test" --track                     
+python3 train.py --algo ppo_corrected_2 --env CartPole-v1 --wandb-project-name RL_2025 -tags opt_parameters --track --eval-freq 1000 --study-name 100_optimization_pp_corrected_2 --storage logs/optuna_ppo_corrected_2.log
