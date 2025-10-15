@@ -3,6 +3,10 @@ import importlib
 import os
 import sys
 
+from rl_zoo3.utils import ALGOS
+from rl_zoo3.custom_algos import EXAMPLE
+ALGOS["example"] = EXAMPLE
+
 import numpy as np
 import torch as th
 import yaml

@@ -25,7 +25,7 @@ from torch import nn as nn
 
 # custom algos
 from rl_zoo3.custom_algos import (
-    DISCOUNTED_PPO, PPOCorrected, PPOCorrected2,
+    DISCOUNTED_PPO, PPOCorrected, PPOCorrected2, EXAMPLE,
     __all__ # Platzhalter!!!
 )
 
@@ -48,7 +48,16 @@ ALGOS: dict[str, type[BaseAlgorithm]] = {
     "discounted_ppo": DISCOUNTED_PPO, 
     "ppo_corrected": PPOCorrected,
     "ppo_corrected_2": PPOCorrected2,
+    "example": EXAMPLE,
 }
+
+# --- Custom-Algorithmen nachträglich registrieren (verhindert Zirkelimporte)
+try:
+    from rl_zoo3.custom_algos.example import EXAMPLE  # importiert NICHT utils
+    ALGOS["example"] = EXAMPLE
+except Exception as e:
+    # Optional: weich tolerieren oder raise; fürs Debuggen:
+    print(f"[rl_zoo3] Hinweis: Custom-Algorithmus 'example' nicht geladen: {e}")
 
 
 def flatten_dict_observations(env: gym.Env) -> gym.Env:
