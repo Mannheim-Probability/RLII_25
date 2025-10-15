@@ -117,9 +117,9 @@ def sample_example_params(trial, n_actions, n_envs, additional_args):
     return {
         "n_steps": trial.suggest_categorical("n_steps", [64, 128, 256, 512, 1024, 2048]),
         "batch_size": trial.suggest_categorical("batch_size", [32, 64, 128, 256]),
-        "gamma": trial.suggest_float("gamma", 0.95, 0.9999),
+        "gamma": trial.suggest_float("gamma", 0.3, 0.9999),
         "gae_lambda": trial.suggest_float("gae_lambda", 0.8, 1.0),
-        "clip_range": trial.suggest_float("clip_range", 0.1, 0.4),
+        "clip_range": trial.suggest_float("clip_range", 0.05, 0.3),
         "ent_coef": trial.suggest_float("ent_coef", 1e-8, 1e-2, log=True),
         "vf_coef": trial.suggest_float("vf_coef", 0.1, 1.0),
         "max_grad_norm": trial.suggest_float("max_grad_norm", 0.3, 2.0),

@@ -1,3 +1,4 @@
+
 import warnings
 from typing import Any, ClassVar, Optional, TypeVar, Union
 
@@ -181,6 +182,9 @@ class EXAMPLE(OnPolicyAlgorithm):
 
             self.clip_range_vf = FloatSchedule(self.clip_range_vf)
 
+
+
+    
     def train(self) -> None:
         """
         Update policy using the currently gathered rollout buffer.
@@ -308,6 +312,9 @@ class EXAMPLE(OnPolicyAlgorithm):
         self.logger.record("train/clip_range", clip_range)
         if self.clip_range_vf is not None:
             self.logger.record("train/clip_range_vf", clip_range_vf)
+    
+
+
 
     def learn(
         self: SelfEXAMPLE,
