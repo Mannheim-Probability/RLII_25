@@ -346,6 +346,37 @@ MiniGrid-ObstructedMaze-2Dlh-v0:
   <<: *minigrid-defaults
   n_timesteps: !!float 1e7 # Unsolved
 
+MiniGrid-SimpleCrossingS11N5-v0:
+  env_wrapper: minigrid.wrappers.FlatObsWrapper
+  policy: 'MlpPolicy'
+  normalize: true
+  n_envs: 16
+  n_steps: 512
+  batch_size: 256
+  n_epochs: 10
+  gamma: 0.995
+  gae_lambda: 0.95
+  learning_rate: 0.0002
+  ent_coef: 0.01
+  clip_range: 0.2
+  n_timesteps: !!float 5e6
+ 
+MiniGrid-Empty-16x16-v0:
+  n_envs: 1
+  n_timesteps: !!float 2e5
+  policy: 'CnnPolicy'
+  env_wrapper: minigrid.wrappers.ImgObsWrapper
+  policy_kwargs: "{'features_extractor_class': MinigridFeaturesExtractor, 'features_extractor_kwargs': {'features_dim': 128}}"
+  learning_rate: 0.0003
+  n_steps: 256
+  batch_size: 64
+  n_epochs: 10
+  gamma: 0.99
+  gae_lambda: 0.95
+  clip_range: 0.2
+  ent_coef: 0.01
+  vf_coef: 0.5
+  normalize: false
 
 CarRacing-v3:
   env_wrapper:

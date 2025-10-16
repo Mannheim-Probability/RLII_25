@@ -19,13 +19,14 @@ from stable_baselines3.common.callbacks import BaseCallback
 from stable_baselines3.common.env_util import make_vec_env
 from stable_baselines3.common.sb2_compat.rmsprop_tf_like import RMSpropTFLike  # noqa: F401
 from stable_baselines3.common.vec_env import DummyVecEnv, SubprocVecEnv, VecEnv, VecFrameStack, VecNormalize
+from rl_zoo3.custom_policy.minigrid_extractor import MinigridFeaturesExtractor
 
 # For custom activation fn
 from torch import nn as nn
 
 # custom algos
 from rl_zoo3.custom_algos import (
-    __all__ # Platzhalter!!!
+    EXAMPLE
 )
 
 ALGOS: dict[str, type[BaseAlgorithm]] = {
@@ -43,6 +44,7 @@ ALGOS: dict[str, type[BaseAlgorithm]] = {
     "trpo": TRPO,
     "ppo_lstm": RecurrentPPO,
     # custom algorithms
+    "example": EXAMPLE,
 }
 
 
@@ -296,6 +298,21 @@ def create_test_env(
             print(f"Stacking {n_stack} frames")
             env = VecFrameStack(env, n_stack)
     return env
+
+# === MiniGrid Integration ===
+try:
+    import minigrid
+    from minigrid.wrappers import ImgObsWrapper
+    import gymnasium as gym
+
+    def make_minigrid_env(env_id: str, **kwargs):
+        """Create a MiniGrid environment compatible with SB3 Zoo."""
+        env = gym.make(env_id, render_mode="rgb_array", **kwargs)
+        env = ImgObsWrapper(env)
+        return env
+
+except ImportError:
+    print("MiniGrid not installed. Run `pip install minigrid`.")
 
 
 class SimpleLinearSchedule:
