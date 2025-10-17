@@ -43,8 +43,8 @@ ALGOS: dict[str, type[BaseAlgorithm]] = {
 
 # --- Custom-Algorithmen nachträglich registrieren (verhindert Zirkelimporte)
 try:
-    from rl_zoo3.custom_algos.example import EXAMPLE  # importiert NICHT utils
-    ALGOS["example"] = EXAMPLE
+    from rl_zoo3.custom_algos.PPO_changed_before_Normalization import PPO_changed_before_Normalization  # importiert NICHT utils
+    ALGOS["PPO_changed_before_Normalization"] = PPO_changed_before_Normalization
 except Exception as e:
     # Optional: weich tolerieren oder raise; fürs Debuggen:
     print(f"[rl_zoo3] Hinweis: Custom-Algorithmus 'example' nicht geladen: {e}")

@@ -13,10 +13,10 @@ from stable_baselines3.common.policies import ActorCriticCnnPolicy, ActorCriticP
 from stable_baselines3.common.type_aliases import GymEnv, MaybeCallback, Schedule
 from stable_baselines3.common.utils import FloatSchedule, explained_variance
 
-SelfEXAMPLE = TypeVar("SelfEXAMPLE", bound="EXAMPLE")
+SelfPPO_changed_before_Normalization = TypeVar("SelfPPO_changed_before_Normalization", bound="PPO_changed_before_Normalization")
 
 
-class EXAMPLE(OnPolicyAlgorithm):
+class PPO_changed_before_Normalization(OnPolicyAlgorithm):
     """
     Proximal Policy Optimization algorithm (PPO) (clip version)
 
@@ -317,14 +317,14 @@ class EXAMPLE(OnPolicyAlgorithm):
 
 
     def learn(
-        self: SelfEXAMPLE,
+        self: SelfPPO_changed_before_Normalization,
         total_timesteps: int,
         callback: MaybeCallback = None,
         log_interval: int = 1,
         tb_log_name: str = "PPO",
         reset_num_timesteps: bool = True,
         progress_bar: bool = False,
-    ) -> SelfEXAMPLE:
+    ) -> SelfPPO_changed_before_Normalization:
         return super().learn(
             total_timesteps=total_timesteps,
             callback=callback,
