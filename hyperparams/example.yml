@@ -123,10 +123,6 @@ LunarLander-v3:
   vf_coef: 0.702
   max_grad_norm: 1.58
   learning_rate: 0.0003
-  callback:
-    - rl_zoo3.custom_callbacks.ExpDecayLRCallback:
-        lr0: 0.0003
-        final_factor: 0.01
 
 LunarLanderContinuous-v3:
   n_envs: 16
