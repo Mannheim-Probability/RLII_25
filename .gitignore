@@ -23,6 +23,8 @@ plots/
 
 tests/dummy_env/build/
 
+environments
+.python-version
 
 # Setuptools distribution and build folders.
 /dist/
