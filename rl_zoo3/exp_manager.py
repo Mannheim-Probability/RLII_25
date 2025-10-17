@@ -344,7 +344,7 @@ class ExperimentManager:
         else:
             raise ValueError(f"Hyperparameters not found for {self.algo}-{self.env_name.gym_id} in {self.config}")
 
-        if self.storage and self.study_name and self.trial_id:
+        if self.storage and self.study_name and not self.optimize_hyperparameters: # and self.trial_id:
             print("Loading from Optuna study...")
             study_hyperparams = self.load_trial(self.storage, self.study_name, self.trial_id)
             hyperparams.update(study_hyperparams)
