@@ -41,8 +41,8 @@ ALGOS: dict[str, type[BaseAlgorithm]] = {
     "trpo": TRPO,
     "ppo_lstm": RecurrentPPO,
     # custom algorithms
-    "ppo_corrected": PPOCorrected,
-    "ppo_corrected_2": PPOCorrected2,
+    "ppo_mod_advantages": PPOCorrected,
+    "ppo_mod_sampling": PPOCorrected2,
 }
 
 
