@@ -1,6 +1,6 @@
 #!/bin/bash
 
-source venv/bin/activate
+source .venv/bin/activate
 
 # python train.py --algo ppo  --env CartPole-v1 -optimize --n-trials 10 --n-startup-trials 3 -n 30000 --n-evaluations 3  --sampler random --pruner median --study-name test_study --storage logs/test_study.log 
 
@@ -15,7 +15,7 @@ STARTUP_TRIALS=10    # random init for NSGA-II
 TIMESTEPS=1000000    # 1e6 total env steps per trial
 EVALS=8              # evaluate progress a few times during training
 SAMPLER="nsgaii"
-PRUNER= "auto" # "median"      # robust early-stopping; use "auto" if your train.py supports it well
+PRUNER="auto" # "median"      # robust early-stopping; use "auto" if your train.py supports it well
 STUDY="ppo_lunarlander_nsgaii_1e6"
 STORAGE="logs/${STUDY}.log"
 
