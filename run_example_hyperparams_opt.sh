@@ -8,14 +8,14 @@ source .venv/bin/activate
 
 # === NSGA-II HPO for PPO on LunarLander (discrete) ===
 # Adjust TRIALS/EVALS if you need a faster or more thorough run.
-ENV_NAME="LunarLander-v2"
+ENV_NAME="LunarLander-v3"
 ALGO="ppo"
 TRIALS=30            # reasonable budget; try 10 for a quick dry-run
 STARTUP_TRIALS=10    # random init for NSGA-II
 TIMESTEPS=1000000    # 1e6 total env steps per trial
 EVALS=8              # evaluate progress a few times during training
 SAMPLER="nsgaii"
-PRUNER="auto" # "median"      # robust early-stopping; use "auto" if your train.py supports it well
+PRUNER="median"      # robust early-stopping; use "auto" if your train.py supports it well
 STUDY="ppo_lunarlander_nsgaii_1e6"
 STORAGE="logs/${STUDY}.log"
 
