@@ -18,7 +18,7 @@ import yaml
 from gymnasium import spaces
 from huggingface_sb3 import EnvironmentName
 from optuna.pruners import BasePruner, MedianPruner, NopPruner, SuccessiveHalvingPruner
-from optuna.samplers import BaseSampler, RandomSampler, TPESampler
+from optuna.samplers import BaseSampler, RandomSampler, TPESampler, NSGAIISampler, NSGAIIISampler
 from optuna.study import MaxTrialsCallback
 from optuna.trial import TrialState
 from optuna.visualization import plot_optimization_history, plot_param_importances
@@ -344,7 +344,7 @@ class ExperimentManager:
         else:
             raise ValueError(f"Hyperparameters not found for {self.algo}-{self.env_name.gym_id} in {self.config}")
 
-        if self.storage and self.study_name and self.trial_id:
+        if self.storage and self.study_name and not self.optimize_hyperparameters:
             print("Loading from Optuna study...")
             study_hyperparams = self.load_trial(self.storage, self.study_name, self.trial_id)
             hyperparams.update(study_hyperparams)
@@ -750,7 +750,7 @@ class ExperimentManager:
             model.load_replay_buffer(replay_buffer_path, truncate_last_traj=self.truncate_last_trajectory)
         return model
 
-    def _create_sampler(self, sampler_method: str) -> BaseSampler:
+    def _create_sampler(self, sampler_method: str) -> BaseSampler:  # TODO: NSGAIII einfügen
         # n_warmup_steps: Disable pruner until the trial reaches the given number of steps.
         if sampler_method == "random":
             sampler: BaseSampler = RandomSampler(seed=self.seed)
@@ -760,6 +760,13 @@ class ExperimentManager:
             import optunahub
 
             sampler = optunahub.load_module("samplers/auto_sampler").AutoSampler(seed=self.seed)
+        elif sampler_method == "nsgaiii":
+            # import optunahub
+
+            # sampler = optunahub.load_module("samplers/nsga3_sampler").NSGA3Sampler()
+            sampler = NSGAIISampler(seed=self.seed)
+        elif sampler_method == "nsgaiii":
+            sampler = NSGAIIISampler(seed=self.seed)
         else:
             raise ValueError(f"Unknown sampler: {sampler_method}")
         return sampler
@@ -776,7 +783,7 @@ class ExperimentManager:
             raise ValueError(f"Unknown pruner: {pruner_method}")
         return pruner
 
-    def objective(self, trial: optuna.Trial) -> float:
+    def objective(self, trial: optuna.Trial) -> float:  # TODO: vllt ein weiteres objective reinfügen
         kwargs = self._hyperparams.copy()
 
         n_envs = 1 if self.algo == "ars" else self.n_envs
