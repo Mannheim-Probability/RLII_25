@@ -1,5 +1,7 @@
-# from .example import EXAMPLE
+from .ppo_corrected import PPOCorrected
+from .ppo_corrected_2 import PPOCorrected2
 
 __all__ = [
-    # EXAMPLE,
+    "PPOCorrected",
+    "PPOCorrected2",
 ]
