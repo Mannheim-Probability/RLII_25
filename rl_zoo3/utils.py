@@ -41,16 +41,9 @@ ALGOS: dict[str, type[BaseAlgorithm]] = {
     "trpo": TRPO,
     "ppo_lstm": RecurrentPPO,
     # custom algorithms
-<<<<<<< HEAD
     "ppo_mod_advantages": PPOCorrected,
     "ppo_mod_sampling": PPOCorrected2,
     "ppo_changed_before_normalization": PPO_changed_before_Normalization,
-=======
-    "discounted_ppo": DISCOUNTED_PPO, 
-    "ppo_corrected": PPOCorrected,
-    "ppo_corrected_2": PPOCorrected2,
-    "example": EXAMPLE,
->>>>>>> e573110 (merging with arnes ppo implementation)
 }
 
 # --- Custom-Algorithmen nachträglich registrieren (verhindert Zirkelimporte)
