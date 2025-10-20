@@ -526,6 +526,7 @@ HYPERPARAMS_SAMPLER = {
     "tqc": sample_tqc_params,
     "td3": sample_td3_params,
     "trpo": sample_trpo_params,
+    "ppo_changed_before_normalization": sample_ppo_params,  
 }
 
 # Convert sampled value to hyperparameters
@@ -541,6 +542,7 @@ HYPERPARAMS_CONVERTER = {
     "tqc": convert_offpolicy_params,
     "td3": convert_offpolicy_params,
     "trpo": convert_onpolicy_params,
+    "ppo_changed_before_normalization": sample_ppo_params,  
 }
 
 
