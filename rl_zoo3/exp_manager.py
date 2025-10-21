@@ -767,7 +767,7 @@ class ExperimentManager:
             import optunahub
 
             sampler = optunahub.load_module("samplers/auto_sampler").AutoSampler(seed=self.seed)
-        elif sampler_method == "nsgaiii":
+        elif sampler_method == "nsgaii":
             # import optunahub
 
             # sampler = optunahub.load_module("samplers/nsga3_sampler").NSGA3Sampler()

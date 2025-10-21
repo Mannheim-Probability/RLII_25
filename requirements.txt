@@ -1,7 +1,8 @@
 gym==0.26.2
 stable-baselines3[extra,tests,docs]>=2.6.1a1,<3.0
 sb3-contrib>=2.2.0a8,<3.0
-box2d-py==2.3.8
+#box2d-py==2.3.8
+Box2D==2.3.10 
 # pybullet_envs_gymnasium>=0.6.0
 minigrid
 cloudpickle>=2.2.1
