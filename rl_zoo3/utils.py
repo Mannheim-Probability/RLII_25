@@ -24,7 +24,7 @@ from stable_baselines3.common.vec_env import DummyVecEnv, SubprocVecEnv, VecEnv,
 from torch import nn as nn
 
 # custom algos
-from rl_zoo3.custom_algos import PPOCorrected, PPOCorrected2
+from rl_zoo3.custom_algos import PPOCorrected, PPOCorrected2, PPO_changed_before_Normalization,
 
 
 ALGOS: dict[str, type[BaseAlgorithm]] = {
@@ -44,6 +44,7 @@ ALGOS: dict[str, type[BaseAlgorithm]] = {
     # custom algorithms
     "ppo_mod_advantages": PPOCorrected,
     "ppo_mod_sampling": PPOCorrected2,
+    "ppo_changed_before_normalization": PPO_changed_before_Normalization,
 }
 
 
