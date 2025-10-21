@@ -23,12 +23,8 @@ from stable_baselines3.common.vec_env import DummyVecEnv, SubprocVecEnv, VecEnv,
 # For custom activation fn
 from torch import nn as nn
 
-<<<<<<< HEAD
-
-=======
 # custom algos
 from rl_zoo3.custom_algos import PPOCorrected, PPOCorrected2, PPO_changed_before_Normalization
->>>>>>> origin/master
 
 ALGOS: dict[str, type[BaseAlgorithm]] = {
     "a2c": A2C,
@@ -43,20 +39,16 @@ ALGOS: dict[str, type[BaseAlgorithm]] = {
     "qrdqn": QRDQN,
     "tqc": TQC,
     "trpo": TRPO,
-<<<<<<< HEAD
-    "ppo_lstm": RecurrentPPO
-=======
     "ppo_lstm": RecurrentPPO,
     # custom algorithms
     "ppo_mod_advantages": PPOCorrected,
     "ppo_mod_sampling": PPOCorrected2,
     "ppo_changed_before_normalization": PPO_changed_before_Normalization,
->>>>>>> origin/master
 }
 
 # --- Custom-Algorithmen nachträglich registrieren (verhindert Zirkelimporte)
 try:
-    from rl_zoo3.custom_algos.PPO_changed_before_Normalization import PPO_changed_before_Normalization  # importiert NICHT utils
+    from rl_zoo3.custom_algos import PPO_changed_before_Normalization  # importiert NICHT utils
     ALGOS["PPO_changed_before_Normalization"] = PPO_changed_before_Normalization
 except Exception as e:
     # Optional: weich tolerieren oder raise; fürs Debuggen:
