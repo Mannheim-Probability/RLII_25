@@ -87,7 +87,11 @@ def train() -> None:
         help="Sampler to use when optimizing hyperparameters",
         type=str,
         default="tpe",
+<<<<<<< HEAD
         choices=["random", "tpe", "auto", "gp"],
+=======
+        choices=["random", "tpe", "auto", "qmc"],
+>>>>>>> fa0a87b (qmc sampler added)
     )
     parser.add_argument(
         "--pruner",
