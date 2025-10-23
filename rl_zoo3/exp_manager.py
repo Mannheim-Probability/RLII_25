@@ -18,7 +18,7 @@ import yaml
 from gymnasium import spaces
 from huggingface_sb3 import EnvironmentName
 from optuna.pruners import BasePruner, MedianPruner, NopPruner, SuccessiveHalvingPruner
-from optuna.samplers import BaseSampler, RandomSampler, TPESampler
+from optuna.samplers import BaseSampler, RandomSampler, TPESampler, QMCSampler
 from optuna.study import MaxTrialsCallback
 from optuna.trial import TrialState
 from optuna.visualization import plot_optimization_history, plot_param_importances
@@ -760,6 +760,8 @@ class ExperimentManager:
             import optunahub
 
             sampler = optunahub.load_module("samplers/auto_sampler").AutoSampler(seed=self.seed)
+        elif sampler_method == "qmc":
+            sampler = QMCSampler(seed=self.seed, scramble=True)
         else:
             raise ValueError(f"Unknown sampler: {sampler_method}")
         return sampler
