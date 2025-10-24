@@ -1,1 +1,1 @@
-python3 train.py --algo ppo_corrected_2 --env CartPole-v1 --wandb-project-name RL_2025 -tags test --track --eval-freq 1000 --study-name 100_optimization_pp_corrected_2 --storage logs/optuna_ppo_corrected_2.log
+python train.py --algo ppo --env CartPole-v1 -n 100000 --track --wandb-project-name "test" --wandb-entity "RL2_2025" -tags test_run_daniel  --eval-freq 1000 
