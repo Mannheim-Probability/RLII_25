@@ -1,0 +1,5 @@
+#!/bin/bash
+
+source venv/bin/activate
+
+python train.py --algo ppo --env CartPole-v1 -n 100000 --track --wandb-project-name "test" --wandb-entity "RL2_2025" -tags test_run_daniel  --eval-freq 1000 
