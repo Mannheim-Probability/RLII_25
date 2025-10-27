@@ -49,6 +49,10 @@ from torch import nn as nn
 # Register custom envs
 import rl_zoo3.import_envs  # noqa: F401
 from rl_zoo3.callbacks import SaveVecNormalizeCallback, TrialEvalCallback
+
+# import custom callbacks
+from rl_zoo3.custom_callbacks.callbacks_custom import EvalCallbackCustom, TrialEvalCallbackCustom
+
 from rl_zoo3.hyperparams_opt import HYPERPARAMS_CONVERTER, HYPERPARAMS_SAMPLER
 from rl_zoo3.utils import (
     ALGOS,
@@ -110,6 +114,7 @@ class ExperimentManager:
         config: Optional[str] = None,
         show_progress: bool = False,
         trial_id: Optional[int] = None,
+        use_discounted_return: bool = True,
     ):
         super().__init__()
         self.algo = algo
@@ -144,6 +149,7 @@ class ExperimentManager:
         # self.vec_env_kwargs = {} if vec_env_type == "dummy" else {"start_method": "fork"}
 
         # Callbacks
+        self.use_discounted_return = use_discounted_return
         self.specified_callbacks: list = []
         self.callbacks: list[BaseCallback] = []
         # Use env-kwargs if eval_env_kwargs was not specified
@@ -504,6 +510,9 @@ class ExperimentManager:
             self.specified_callbacks = hyperparams["callback"]
             del hyperparams["callback"]
 
+        # save discount factor for evaluation callbacks
+        self.gamma = hyperparams.get("gamma", 0.99)
+
         return hyperparams, env_wrapper, callbacks, vec_env_wrapper
 
     def _preprocess_action_noise(
@@ -572,15 +581,19 @@ class ExperimentManager:
                 print("Creating test environment")
 
             save_vec_normalize = SaveVecNormalizeCallback(save_freq=1, save_path=self.params_path)
-            eval_callback = EvalCallback(
-                self.create_envs(self.n_eval_envs, eval_env=True),
-                callback_on_new_best=save_vec_normalize,
-                best_model_save_path=self.save_path,
-                n_eval_episodes=self.n_eval_episodes,
-                log_path=self.save_path,
-                eval_freq=self.eval_freq,
-                deterministic=self.deterministic_eval,
-            )
+
+            # if we want to evaluate discounted return, we have to use custom callback for evaluation            
+            eval_callback = EvalCallbackCustom(
+                    self.create_envs(self.n_eval_envs, eval_env=True),
+                    callback_on_new_best=save_vec_normalize,
+                    best_model_save_path=self.save_path,
+                    n_eval_episodes=self.n_eval_episodes,
+                    log_path=self.save_path,
+                    eval_freq=self.eval_freq,
+                    deterministic=self.deterministic_eval,
+                    use_discounted_return=self.use_discounted_return,
+                    gamma = self.gamma,
+                )
 
             self.callbacks.append(eval_callback)
 
@@ -826,15 +839,22 @@ class ExperimentManager:
         if self.optimization_log_path is not None:
             path = os.path.join(self.optimization_log_path, f"trial_{trial.number!s}")
         callbacks = get_callback_list({"callback": self.specified_callbacks})
-        eval_callback = TrialEvalCallback(
-            eval_env,
-            trial,
-            best_model_save_path=path,
-            log_path=path,
-            n_eval_episodes=self.n_eval_episodes,
-            eval_freq=optuna_eval_freq,
-            deterministic=self.deterministic_eval,
-        )
+        
+        # we use gamma that was sampled by optuna sampler when optimizing over gamma
+        # of course gamma should be fixed when we use discounted return as metric for optimization
+        sampled_gamma = kwargs.get("gamma", 0.99)
+
+        eval_callback = TrialEvalCallbackCustom(
+                eval_env,
+                trial,
+                best_model_save_path=path,
+                log_path=path,
+                n_eval_episodes=self.n_eval_episodes,
+                eval_freq=optuna_eval_freq,
+                deterministic=self.deterministic_eval,
+                use_discounted_return=self.use_discounted_return,
+                gamma = sampled_gamma,
+            ) 
         callbacks.append(eval_callback)
 
         learn_kwargs = {}
