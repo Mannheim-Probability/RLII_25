@@ -134,10 +134,9 @@ def sample_ppo_params(trial: optuna.Trial, n_actions: int, n_envs: int, addition
     activation_fn = trial.suggest_categorical("activation_fn", ["tanh", "relu"])
     #lr_schedule = "constant"
     # Uncomment to enable learning rate schedule
-
-    lr_schedule = trial.suggest_categorical('lr_schedule', ['linear', 'constant'])
-    if lr_schedule == "linear":
-         learning_rate = linear_schedule(learning_rate)
+    #lr_schedule = trial.suggest_categorical('lr_schedule', ['linear', 'constant'])
+    #if lr_schedule == "linear":
+    #     learning_rate = linear_schedule(learning_rate)
 
     # Display true values
     #trial.set_user_attr("gamma", 1 - one_minus_gamma)
@@ -185,12 +184,12 @@ def sample_ppo_params_with_kl_bound(trial: optuna.Trial, n_actions: int, n_envs:
     max_grad_norm = trial.suggest_float("max_grad_norm", 0.3, 2)
     net_arch = trial.suggest_categorical("net_arch", ["tiny", "small", "medium"])
     activation_fn = trial.suggest_categorical("activation_fn", ["tanh", "relu"])
+    
     #lr_schedule = "constant"
     # Uncomment to enable learning rate schedule
-
-    lr_schedule = trial.suggest_categorical('lr_schedule', ['linear', 'constant'])
-    if lr_schedule == "linear":
-         learning_rate = linear_schedule(learning_rate)
+    #lr_schedule = trial.suggest_categorical('lr_schedule', ['linear', 'constant'])
+    #if lr_schedule == "linear":
+    #     learning_rate = linear_schedule(learning_rate)
 
     # adding target_kl in hyperparam opt    
     target_kl = trial.suggest_float("target_kl", 0.001, 5.0, log=True)
