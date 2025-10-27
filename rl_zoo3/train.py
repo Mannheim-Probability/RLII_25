@@ -87,7 +87,7 @@ def train() -> None:
         help="Sampler to use when optimizing hyperparameters",
         type=str,
         default="tpe",
-        choices=["random", "tpe", "auto"],
+        choices=["random", "tpe", "auto", "gp"],
     )
     parser.add_argument(
         "--pruner",

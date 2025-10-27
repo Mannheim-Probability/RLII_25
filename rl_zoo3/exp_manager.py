@@ -18,7 +18,7 @@ import yaml
 from gymnasium import spaces
 from huggingface_sb3 import EnvironmentName
 from optuna.pruners import BasePruner, MedianPruner, NopPruner, SuccessiveHalvingPruner
-from optuna.samplers import BaseSampler, RandomSampler, TPESampler
+from optuna.samplers import BaseSampler, RandomSampler, TPESampler, GPSampler
 from optuna.study import MaxTrialsCallback
 from optuna.trial import TrialState
 from optuna.visualization import plot_optimization_history, plot_param_importances
@@ -775,6 +775,8 @@ class ExperimentManager:
             sampler: BaseSampler = RandomSampler(seed=self.seed)
         elif sampler_method == "tpe":
             sampler = TPESampler(n_startup_trials=self.n_startup_trials, seed=self.seed, multivariate=True)
+        elif sampler_method == "gp":
+            sampler = GPSampler(n_startup_trials=self.n_startup_trials, seed=self.seed)
         elif sampler_method == "auto":
             import optunahub
 
