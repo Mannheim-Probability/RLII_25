@@ -163,6 +163,14 @@ def train() -> None:
         "-tags", "--wandb-tags", type=str, default=[], nargs="+", help="Tags for wandb run, e.g.: -tags optimized pr-123"
     )
 
+    # Use discounted return by default, disable it via --no-discounted-return
+    parser.add_argument(
+        "--no-discounted-return",
+        action="store_false",
+        dest="use_discounted_return",
+        help="Use the undiscounted sum of rewards instead of the discounted return for evaluation and hyperparameter tuning.",
+    )
+
     args = parser.parse_args()
 
     # Going through custom gym packages to let them register in the global registry
@@ -262,6 +270,7 @@ def train() -> None:
         config=args.conf_file,
         show_progress=args.progress,
         trial_id=args.trial_id,
+        use_discounted_return=args.use_discounted_return, 
     )
 
     # Prepare experiment and launch hyperparameter optimization if needed
