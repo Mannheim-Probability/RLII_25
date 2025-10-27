@@ -499,12 +499,12 @@ HYPERPARAMS_SAMPLER = {
     "ppo_lstm": sample_ppo_lstm_params,
     "ppo_corrected": sample_ppo_params,
     "ppo_corrected_2": sample_ppo_params,
-    "ppo_discont_before_norm": sample_ppo_params,
+    "ppo_corrected_3": sample_ppo_params,
     "sac": sample_sac_params,
     "tqc": sample_tqc_params,
     "td3": sample_td3_params,
     "trpo": sample_trpo_params,
-    "ppo_changed_before_normalization": sample_ppo_params,  
+    "PPO_changed_before_Normalization": sample_ppo_params,  
 }
 
 # Convert sampled value to hyperparameters
@@ -518,10 +518,10 @@ HYPERPARAMS_CONVERTER = {
     "ppo_lstm": convert_onpolicy_params,
     "ppo_corrected": convert_onpolicy_params,
     "ppo_corrected_2": convert_onpolicy_params,
-    "ppo_discont_before_norm": convert_onpolicy_params,
+    "ppo_corrected_3": convert_onpolicy_params,
     "sac": convert_offpolicy_params,
     "tqc": convert_offpolicy_params,
     "td3": convert_offpolicy_params,
     "trpo": convert_onpolicy_params,
-    "ppo_changed_before_normalization": sample_ppo_params,  
+    "PPO_changed_before_Normalization": sample_ppo_params,  
 }

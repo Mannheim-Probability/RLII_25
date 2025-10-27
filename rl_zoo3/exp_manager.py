@@ -43,6 +43,8 @@ from stable_baselines3.common.vec_env import (
     is_vecenv_wrapped,
 )
 
+from rl_zoo3.custom_policy.minigrid_extractor import MinigridFeaturesExtractor
+
 # For custom activation fn
 from torch import nn as nn
 
