@@ -278,10 +278,10 @@ if __name__ == "__main__":
     # Point each algo name to its Optuna storage file (journal .log or sqlite .db)
     # ---- point to your 4 journal logs ----
     algo_paths = {
-        "ppo": "/Users/taach/projects/RLII_25/logs/ppo_lunarlander_nsgaii_1e6.log",
-        "ppo_changed_before_normalization": "/Users/taach/projects/RLII_25/logs/ppo_changed_before_normalization_lunarlander_nsgaii_1e6.log",
-        "ppo_mod_advantages": "/Users/taach/projects/RLII_25/logs/ppo_mod_ad_lunarlander_nsgaii_1e6.log",
-        "ppo_mod_sampling": "/Users/taach/projects/RLII_25/logs/ppo_mod_sampling_lunarlander_nsgaii_1e6.log",
+        "ppo": "/Users/tilmanaach/projects/RLII_25/logs/ppo_lunarlander_nsgaii_1e6.log",
+        "ppo_changed_before_normalization": "/Users/tilmanaach/projects/RLII_25/logs/ppo_changed_before_normalization_lunarlander_nsgaii_1e6.log",
+        "ppo_mod_advantages": "/Users/tilmanaach/projects/RLII_25/logs/ppo_mod_ad_lunarlander_nsgaii_1e6.log",
+        "ppo_mod_sampling": "/Users/tilmanaach/projects/RLII_25/logs/ppo_mod_sampling_lunarlander_nsgaii_1e6.log",
     }
 
     # ---- study names inside those logs (journal header) ----

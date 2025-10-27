@@ -11,7 +11,7 @@ source .venv/bin/activate
 ENV_NAME="LunarLander-v3"
 ALGO="ppo_changed_before_normalization"
 TRIALS=30            # reasonable budget; try 10 for a quick dry-run
-STARTUP_TRIALS=10    # random init for NSGA-II
+STARTUP_TRIALS=4    # random init for NSGA-II
 TIMESTEPS=1000000    # 1e6 total env steps per trial
 EVALS=8              # evaluate progress a few times during training
 SAMPLER="nsgaii"
