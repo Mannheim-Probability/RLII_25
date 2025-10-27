@@ -113,16 +113,16 @@ def sample_ppo_params(trial: optuna.Trial, n_actions: int, n_envs: int, addition
     :return:
     """
     # From 2**5=32 to 2**10=1024
-    batch_size_pow = trial.suggest_int("batch_size_pow", 2, 10)
+    batch_size_pow = trial.suggest_int("batch_size_pow", 4, 8)
     # From 2**5=32 to 2**12=4096
-    n_steps_pow = trial.suggest_int("n_steps_pow", 5, 12)
+    n_steps_pow = trial.suggest_int("n_steps_pow", 5, 8)
     one_minus_gamma = trial.suggest_float("one_minus_gamma", 0.0001, 0.03, log=True)
     one_minus_gae_lambda = trial.suggest_float("one_minus_gae_lambda", 0.0001, 0.1, log=True)
 
-    learning_rate = trial.suggest_float("learning_rate", 1e-5, 0.002, log=True)
+    learning_rate = trial.suggest_float("learning_rate", 5e-5, 1e-3, log=True)
     ent_coef = trial.suggest_float("ent_coef", 0.00000001, 0.1, log=True)
-    clip_range = trial.suggest_categorical("clip_range", [0.1, 0.2, 0.3, 0.4])
-    n_epochs = trial.suggest_categorical("n_epochs", [1, 5, 10, 20])
+    clip_range = trial.suggest_categorical("clip_range", [0.1, 0.2, 0.3])
+    n_epochs = trial.suggest_categorical("n_epochs", [3, 5, 10])
 
     max_grad_norm = trial.suggest_float("max_grad_norm", 0.3, 2)
     net_arch = trial.suggest_categorical("net_arch", ["tiny", "small", "medium"])
@@ -497,10 +497,14 @@ HYPERPARAMS_SAMPLER = {
     "qrdqn": sample_qrdqn_params,
     "ppo": sample_ppo_params,
     "ppo_lstm": sample_ppo_lstm_params,
+    "ppo_corrected": sample_ppo_params,
+    "ppo_corrected_2": sample_ppo_params,
+    "ppo_discont_before_norm": sample_ppo_params,
     "sac": sample_sac_params,
     "tqc": sample_tqc_params,
     "td3": sample_td3_params,
     "trpo": sample_trpo_params,
+    "ppo_changed_before_normalization": sample_ppo_params,  
 }
 
 # Convert sampled value to hyperparameters
@@ -512,8 +516,12 @@ HYPERPARAMS_CONVERTER = {
     "qrdqn": convert_offpolicy_params,
     "ppo": convert_onpolicy_params,
     "ppo_lstm": convert_onpolicy_params,
+    "ppo_corrected": convert_onpolicy_params,
+    "ppo_corrected_2": convert_onpolicy_params,
+    "ppo_discont_before_norm": convert_onpolicy_params,
     "sac": convert_offpolicy_params,
     "tqc": convert_offpolicy_params,
     "td3": convert_offpolicy_params,
     "trpo": convert_onpolicy_params,
+    "ppo_changed_before_normalization": sample_ppo_params,  
 }

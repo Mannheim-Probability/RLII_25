@@ -43,8 +43,6 @@ from stable_baselines3.common.vec_env import (
     is_vecenv_wrapped,
 )
 
-from rl_zoo3.custom_policy.minigrid_extractor import MinigridFeaturesExtractor
-
 # For custom activation fn
 from torch import nn as nn
 
@@ -346,7 +344,7 @@ class ExperimentManager:
         else:
             raise ValueError(f"Hyperparameters not found for {self.algo}-{self.env_name.gym_id} in {self.config}")
 
-        if self.storage and self.study_name and self.trial_id:
+        if self.storage and self.study_name and not self.optimize_hyperparameters: #and self.trial_id:
             print("Loading from Optuna study...")
             study_hyperparams = self.load_trial(self.storage, self.study_name, self.trial_id)
             hyperparams.update(study_hyperparams)
@@ -459,7 +457,13 @@ class ExperimentManager:
 
         # Pre-process policy/buffer keyword arguments
         # Convert to python object if needed
-        for kwargs_key in {"policy_kwargs", "replay_buffer_class", "replay_buffer_kwargs"}:
+        for kwargs_key in {
+            "policy_kwargs",
+            "replay_buffer_class",
+            "replay_buffer_kwargs",
+            "rollout_buffer_class",
+            "rollout_buffer_kwargs",
+        }:
             if kwargs_key in hyperparams.keys() and isinstance(hyperparams[kwargs_key], str):
                 hyperparams[kwargs_key] = eval(hyperparams[kwargs_key])
 

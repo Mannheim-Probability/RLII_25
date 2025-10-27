@@ -200,8 +200,8 @@ def all_plots():  # noqa: C901
                         "mean_per_eval": mean_per_eval,
                     }
 
-                    plt.plot(timesteps / divider, mean_, label=f"{algo}-{args.labels[folder_idx]}", linewidth=3)
-                    plt.fill_between(timesteps / divider, mean_ + std_error, mean_ - std_error, alpha=0.5)
+                    plt.plot(timesteps / divider, mean_, label=f"{algo}-{args.labels[folder_idx]}", linewidth=2)
+                    plt.fill_between(timesteps / divider, mean_ + std_error, mean_ - std_error, alpha=0.3)
 
         plt.legend()
 
