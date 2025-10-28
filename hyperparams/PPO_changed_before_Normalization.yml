@@ -114,15 +114,16 @@ BipedalWalkerHardcore-v3:
 LunarLander-v3:
   n_timesteps: !!float 1e6
   policy: 'MlpPolicy'
-  n_steps: 64
-  batch_size: 256
-  gamma: 0.606
-  gae_lambda: 0.86
-  clip_range: 0.252
+  learning_rate: 0.0006311041095888913
+  gamma: 0.9834630468432689
+  gae_lambda: 0.9891261051216473
+  clip_range: 0.19842573663087104
+  batch_size: 64          # 2 ** round(4.977...) = 32
+  n_epochs: 7             # round(4.0047...) = 4
+  n_steps: 2164
   ent_coef: 0.00017
   vf_coef: 0.702
   max_grad_norm: 1.58
-  learning_rate: 0.0003
 
 LunarLanderContinuous-v3:
   n_envs: 16
