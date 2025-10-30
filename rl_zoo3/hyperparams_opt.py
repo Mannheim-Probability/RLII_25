@@ -527,6 +527,7 @@ HYPERPARAMS_SAMPLER = {
     "td3": sample_td3_params,
     "trpo": sample_trpo_params,
     "discounted_ppo": sample_ppo_params,
+    "ppo_changed_before_normalization": sample_ppo_params,  
     "ppo_corrected_1": sample_ppo_params,
     "ppo_corrected_2": sample_ppo_params,
 }
@@ -545,11 +546,9 @@ HYPERPARAMS_CONVERTER = {
     "td3": convert_offpolicy_params,
     "trpo": convert_onpolicy_params,
     "discounted_ppo": convert_onpolicy_params,
+    "ppo_changed_before_normalization": sample_ppo_params,  
     "ppo_corrected_1": convert_onpolicy_params,
     "ppo_corrected_2": convert_onpolicy_params,
 }
 
 
-HYPERPARAMS_SAMPLER.update({
-    "example": sample_example_params,
-})

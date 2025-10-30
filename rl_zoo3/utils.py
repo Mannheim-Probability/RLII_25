@@ -24,11 +24,7 @@ from stable_baselines3.common.vec_env import DummyVecEnv, SubprocVecEnv, VecEnv,
 from torch import nn as nn
 
 # custom algos
-from rl_zoo3.custom_algos import (
-    DISCOUNTED_PPO, PPOCorrected, PPOCorrected2, EXAMPLE,
-    __all__ # Platzhalter!!!
-)
-
+from rl_zoo3.custom_algos import PPOCorrected, PPOCorrected2, PPO_changed_before_Normalization
 
 ALGOS: dict[str, type[BaseAlgorithm]] = {
     "a2c": A2C,
@@ -45,10 +41,9 @@ ALGOS: dict[str, type[BaseAlgorithm]] = {
     "trpo": TRPO,
     "ppo_lstm": RecurrentPPO,
     # custom algorithms
-    "discounted_ppo": DISCOUNTED_PPO, 
-    "ppo_corrected": PPOCorrected,
-    "ppo_corrected_2": PPOCorrected2,
-    "example": EXAMPLE,
+    "ppo_mod_advantages": PPOCorrected,
+    "ppo_mod_sampling": PPOCorrected2,
+    "ppo_changed_before_normalization": PPO_changed_before_Normalization,
 }
 
 # --- Custom-Algorithmen nachträglich registrieren (verhindert Zirkelimporte)

@@ -22,7 +22,9 @@ logs/
 plots/
 
 tests/dummy_env/build/
-
+Visualizations Hyperparametertuning
+environments
+.python-version
 
 # Setuptools distribution and build folders.
 /dist/
