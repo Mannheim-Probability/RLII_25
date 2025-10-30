@@ -20,6 +20,7 @@ _build/
 run_crossq_bipedal.sh
 logs/
 plots/
+.DS_Store
 
 tests/dummy_env/build/
 Visualizations Hyperparametertuning
