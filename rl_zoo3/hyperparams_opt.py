@@ -136,7 +136,7 @@ def sample_ppo_params(trial: optuna.Trial, n_actions: int, n_envs: int, addition
     # Uncomment to enable learning rate schedule
     #lr_schedule = trial.suggest_categorical('lr_schedule', ['linear', 'constant'])
     #if lr_schedule == "linear":
-    #     learning_rate = linear_schedule(learning_rate)
+    #    learning_rate = linear_schedule(learning_rate)
 
     # Display true values
     #trial.set_user_attr("gamma", 1 - one_minus_gamma)
@@ -567,6 +567,7 @@ HYPERPARAMS_SAMPLER = {
     "ppo_mod_advantages": sample_ppo_params,  
     "ppo_mod_sampling": sample_ppo_params,  
     "ppo_no_clipping": sample_ppo_params_with_kl_bound,  
+    "ppo_mod_gae": sample_ppo_params_with_kl_bound, 
 }
 
 # Convert sampled value to hyperparameters
@@ -586,4 +587,5 @@ HYPERPARAMS_CONVERTER = {
     "ppo_mod_advantages": convert_onpolicy_params,  
     "ppo_mod_sampling": convert_onpolicy_params,  
     "ppo_no_clipping": convert_onpolicy_params,  
+    "ppo_mod_gae": convert_onpolicy_params, 
 }
