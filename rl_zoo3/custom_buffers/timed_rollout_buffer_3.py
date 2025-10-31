@@ -107,7 +107,7 @@ class TimedRolloutBuffer3(BaseBuffer):
         last_values = last_values.clone().cpu().numpy().flatten()  # type: ignore[assignment]
 
         last_gae_lam = 0
-        print(self.T)
+        
         for step in reversed(range(self.buffer_size)):
             if step == self.buffer_size - 1:
                 next_non_terminal = 1.0 - dones.astype(np.float32)
