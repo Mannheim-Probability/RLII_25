@@ -3,6 +3,7 @@ from .ppo_corrected_2 import PPOCorrected2
 from .PPO_changed_before_Normalization import PPO_changed_before_Normalization
 from .ppo_corrected_3 import PPOCorrected3
 from .ppo_corrected_4 import PPOCorrected4
+from .ppo_corrected_5 import PPOCorrected5
 
 __all__ = [
     "PPOCorrected",
@@ -10,4 +11,5 @@ __all__ = [
     "PPO_changed_before_Normalization",
     "PPOCorrected3",
     "PPOCorrected4",
+    "PPOCorrected5",
 ]
