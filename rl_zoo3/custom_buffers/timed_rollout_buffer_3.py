@@ -107,7 +107,7 @@ class TimedRolloutBuffer3(BaseBuffer):
         last_values = last_values.clone().cpu().numpy().flatten()  # type: ignore[assignment]
 
         last_gae_lam = 0
-        
+
         for step in reversed(range(self.buffer_size)):
             if step == self.buffer_size - 1:
                 next_non_terminal = 1.0 - dones.astype(np.float32)
@@ -118,8 +118,8 @@ class TimedRolloutBuffer3(BaseBuffer):
             delta = self.rewards[step] + self.gamma * next_values * next_non_terminal - self.values[step]
             last_gae_lam = (
                 delta
-                + (1 - self.gae_lambda ** (self.T - self.times[step]))
-                / (1 - self.gae_lambda ** (self.T - self.times[step] + 1))
+                + (1 - self.gae_lambda ** (self.T - self.times[step] - 1))
+                / (1 - self.gae_lambda ** (self.T - self.times[step]))
                 * self.gamma
                 * self.gae_lambda
                 * next_non_terminal
@@ -168,8 +168,8 @@ class TimedRolloutBuffer3(BaseBuffer):
         self.rewards[self.pos] = np.array(reward)
         self.episode_starts[self.pos] = np.array(episode_start)
         self.times[self.pos] = np.array(time)
-        if time > self.T:
-            self.T = time
+        if time >= self.T:
+            self.T = time + 1
         self.values[self.pos] = value.clone().cpu().numpy().flatten()
         self.log_probs[self.pos] = log_prob.clone().cpu().numpy()
         self.pos += 1
