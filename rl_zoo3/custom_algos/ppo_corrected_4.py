@@ -347,6 +347,7 @@ class PPOCorrected4(OnPolicyAlgorithm):
         self.policy.set_training_mode(False)
 
         n_steps = 0
+        times = np.zeros(env.num_envs, dtype=int)
         rollout_buffer.reset()
         # Sample new weights for the state dependent exploration
         if self.use_sde:
@@ -389,6 +390,7 @@ class PPOCorrected4(OnPolicyAlgorithm):
 
             self._update_info_buffer(infos, dones)
             n_steps += 1
+            times += 1
 
             if isinstance(self.action_space, spaces.Discrete):
                 # Reshape in case of discrete action
@@ -397,6 +399,8 @@ class PPOCorrected4(OnPolicyAlgorithm):
             # Handle timeout by bootstrapping with value function
             # see GitHub issue #633
             for idx, done in enumerate(dones):
+                if done:
+                    times[idx] = 0
                 if (
                     done
                     and infos[idx].get("terminal_observation") is not None
