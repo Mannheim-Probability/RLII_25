@@ -416,7 +416,7 @@ class PPOCorrected4(OnPolicyAlgorithm):
                 actions,
                 rewards,
                 self._last_episode_starts,  # type: ignore[arg-type]
-                n_steps - 1,  # type: ignore[arg-type]
+                times - 1,  # type: ignore[arg-type]
                 values,
                 log_probs,
             )
