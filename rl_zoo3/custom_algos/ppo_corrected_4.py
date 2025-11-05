@@ -390,7 +390,7 @@ class PPOCorrected4(OnPolicyAlgorithm):
 
             self._update_info_buffer(infos, dones)
             n_steps += 1
-            times += 1
+            
 
             if isinstance(self.action_space, spaces.Discrete):
                 # Reshape in case of discrete action
@@ -399,8 +399,8 @@ class PPOCorrected4(OnPolicyAlgorithm):
             # Handle timeout by bootstrapping with value function
             # see GitHub issue #633
             for idx, done in enumerate(dones):
-                if done:
-                    times[idx] = 0
+                #if done:
+                #    times[idx] = 0
                 if (
                     done
                     and infos[idx].get("terminal_observation") is not None
@@ -410,18 +410,22 @@ class PPOCorrected4(OnPolicyAlgorithm):
                     with th.no_grad():
                         terminal_value = self.policy.predict_values(terminal_obs)[0]  # type: ignore[arg-type]
                     rewards[idx] += self.gamma * terminal_value
-
+            
+            
             rollout_buffer.add(
                 self._last_obs,  # type: ignore[arg-type]
                 actions,
                 rewards,
                 self._last_episode_starts,  # type: ignore[arg-type]
-                times - 1,  # type: ignore[arg-type]
+                times ,  # type: ignore[arg-type]
                 values,
                 log_probs,
             )
             self._last_obs = new_obs  # type: ignore[assignment]
             self._last_episode_starts = dones
+            
+            # increment time if we have not terminated
+            times = np.where(dones, 0, times + 1)
 
         with th.no_grad():
             # Compute value for the last timestep

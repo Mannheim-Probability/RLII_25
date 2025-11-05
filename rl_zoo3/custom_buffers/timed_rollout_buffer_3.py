@@ -66,9 +66,8 @@ class TimedRolloutBuffer3(BaseBuffer):
         super().__init__(buffer_size, observation_space, action_space, device, n_envs=n_envs)
         self.gae_lambda = gae_lambda
         self.gamma = gamma
-        self.generator_ready = False
-        self.T1 = np.zeros(self.n_envs, dtype=np.float32)
-        self.T2 = np.zeros(self.n_envs, dtype=np.float32)
+        self.generator_ready = False        
+        self.T = np.zeros(self.n_envs, dtype=np.float32)
         self.reset()
 
     def reset(self) -> None:
@@ -109,16 +108,10 @@ class TimedRolloutBuffer3(BaseBuffer):
 
         last_gae_lam = 0
 
-        # testing if timesteps are implemented correctly
-        times = np.zeros((self.buffer_size, self.n_envs), dtype=np.int32)
-        t = np.zeros(self.n_envs, dtype=np.int32)
-        for step in range(self.buffer_size):
-            t = np.where(self.episode_starts[step], 0, t + 1)
-            times[step] = t
-
+ 
         for step in reversed(range(self.buffer_size)):
             if step == self.buffer_size - 1:
-                self.T = self.times[step]
+                self.T = self.times[step] + 1
                 next_non_terminal = 1.0 - dones.astype(np.float32)
                 next_values = last_values
             else:
@@ -136,13 +129,9 @@ class TimedRolloutBuffer3(BaseBuffer):
             )
             self.advantages[step] = last_gae_lam
 
-            # check if episode starts in current step and if so we adapt the corresponding episode length
-            for env_idx in range(self.n_envs):
-                if self.episode_starts[step, env_idx] and step > 0:
-                    self.T1 [env_idx] = self.times[step - 1, env_idx] + 1
 
             if step > 0:
-                self.T2 = np.where(self.episode_starts[step], self.times[step - 1] + 1, self.T)
+                self.T = np.where(self.episode_starts[step], self.times[step - 1] + 1, self.T)
 
         # TD(lambda) estimator, see Github PR #375 or "Telescoping in TD(lambda)"
         # in David Silver Lecture 4: https://www.youtube.com/watch?v=PnHCvfgC_ZA
