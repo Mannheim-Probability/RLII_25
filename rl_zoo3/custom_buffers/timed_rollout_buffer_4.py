@@ -62,7 +62,7 @@ class TimedRolloutBuffer4(TimedRolloutBuffer2):
             "Invalid configuration: gae_lambda = 1.0 leads to division by zero in the modified GAE weighting formula."
             )   
         
-        super().__init__(buffer_size, observation_space, action_space, device, n_envs=n_envs)
+        super().__init__(buffer_size, observation_space, action_space, device, gae_lambda, gamma, n_envs, weighted_sampling)
         self.reset()
         
 
