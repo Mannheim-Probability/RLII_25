@@ -2,4 +2,4 @@
 
 source venv/bin/activate
 
-python train.py --algo ppo  --env CartPole-v1 -optimize --n-trials 10 --n-startup-trials 3 -n 30000 --n-evaluations 3  --sampler random --pruner median --study-name test_study --storage logs/test_study.log 
+python train.py --algo PPOCorrected3 --env LunarLander-v3 -optimize --n-trials 100 --hyperparams gamma:0.998 --n-startup-trials 15 -n 1000000 --n-evaluations 10  --sampler tpe --pruner median --study-name lunarlander_ppo --storage logs/lunarlander_ppo.log 

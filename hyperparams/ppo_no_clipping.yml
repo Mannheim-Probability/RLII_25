@@ -41,6 +41,7 @@ CartPole-v1:
   ent_coef: 0.0
   learning_rate: lin_0.001
   clip_range: lin_0.2
+  target_kl: 0.1
 
 MountainCar-v0:
   normalize: true
@@ -118,7 +119,7 @@ LunarLander-v3:
   n_steps: 1024
   batch_size: 64
   gae_lambda: 0.98
-  gamma: 0.998
+  gamma: 0.999
   n_epochs: 4
   ent_coef: 0.01
 
@@ -126,11 +127,11 @@ LunarLanderContinuous-v3:
   n_envs: 16
   n_timesteps: !!float 1e6
   policy: 'MlpPolicy'
-  n_steps: 128 # 1024
+  n_steps: 1024
   batch_size: 64
   gae_lambda: 0.98
-  gamma: 0.9936 # 0.999
-  n_epochs: 20 # 4
+  gamma: 0.999
+  n_epochs: 4
   ent_coef: 0.01
 
 # Tuned
@@ -580,33 +581,3 @@ Walker2d-v4:
   gae_lambda: 0.95
   max_grad_norm: 1
   vf_coef: 0.871923
-
-
-
-### Miniworld
-
-# Defaults für MiniWorld (bildbasiert)
-MiniWorld-Hallway-v0: &miniworld-defaults
-  policy: 'CnnPolicy'
-  frame_stack: 4
-  n_envs: 8
-  n_timesteps: !!float 2e6
-  n_steps: 256
-  batch_size: 256
-  gamma: 0.99
-  gae_lambda: 0.95
-  n_epochs: 4
-  ent_coef: 0.01
-  learning_rate: lin_3e-4
-  env_wrapper:
-    - rl_zoo3.wrappers.YAMLCompatResizeObservation:
-        shape: [84, 84]
-    - gymnasium.wrappers.transform_observation.GrayscaleObservation:
-        keep_dim: true
-  
-
-MiniWorld-OneRoom-v0:
-  <<: *miniworld-defaults
-
-MiniWorld-ThreeRooms-v0:
-  <<: *miniworld-defaults
