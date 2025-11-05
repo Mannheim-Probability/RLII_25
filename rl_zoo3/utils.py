@@ -24,6 +24,7 @@ from stable_baselines3.common.vec_env import DummyVecEnv, SubprocVecEnv, VecEnv,
 from torch import nn as nn
 
 # custom algos
+
 from rl_zoo3.custom_algos import PPOCorrected, PPOCorrected2, PPO_changed_before_Normalization, PPOCorrected3
 
 ALGOS: dict[str, type[BaseAlgorithm]] = {
@@ -43,17 +44,9 @@ ALGOS: dict[str, type[BaseAlgorithm]] = {
     # custom algorithms
     "ppo_mod_advantages": PPOCorrected,
     "ppo_mod_sampling": PPOCorrected2,
-    "ppo_changed_before_normalization": PPO_changed_before_Normalization,
     "ppo_no_clipping": PPOCorrected3,
+    "ppo_changed_before_normalization": PPO_changed_before_Normalization,
 }
-
-# --- Custom-Algorithmen nachträglich registrieren (verhindert Zirkelimporte)
-try:
-    from rl_zoo3.custom_algos import PPO_changed_before_Normalization  # importiert NICHT utils
-    ALGOS["PPO_changed_before_Normalization"] = PPO_changed_before_Normalization
-except Exception as e:
-    # Optional: weich tolerieren oder raise; fürs Debuggen:
-    print(f"[rl_zoo3] Hinweis: Custom-Algorithmus 'example' nicht geladen: {e}")
 
 
 def flatten_dict_observations(env: gym.Env) -> gym.Env:

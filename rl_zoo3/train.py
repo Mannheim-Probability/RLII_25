@@ -5,9 +5,7 @@ import os
 import time
 import uuid
 
-from rl_zoo3.utils import ALGOS
-from rl_zoo3.custom_algos import PPO_changed_before_Normalization
-ALGOS["PPO_changed_before_Normalization"] = PPO_changed_before_Normalization
+
 
 import gymnasium as gym
 import numpy as np

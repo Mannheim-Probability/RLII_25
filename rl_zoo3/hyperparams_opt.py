@@ -608,10 +608,11 @@ HYPERPARAMS_CONVERTER = {
     "tqc": convert_offpolicy_params,
     "td3": convert_offpolicy_params,
     "trpo": convert_onpolicy_params,
-    "ppo_changed_before_normalization": convert_onpolicy_params,  
+    "PPOCorrected": convert_onpolicy_params,  
     "ppo_mod_advantages": convert_onpolicy_params,  
     "ppo_mod_sampling": convert_onpolicy_params,  
     "ppo_no_clipping": convert_onpolicy_params,  
+    "ppo_changed_before_normalization": convert_onpolicy_params,
 }
 
 

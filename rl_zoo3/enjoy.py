@@ -4,8 +4,8 @@ import os
 import sys
 
 from rl_zoo3.utils import ALGOS
-from rl_zoo3.custom_algos import PPO_changed_before_Normalization
-ALGOS["PPO_changed_before_Normalization"] = PPO_changed_before_Normalization
+from rl_zoo3.custom_algos import PPOCorrected
+ALGOS["PPOCorrected"] = PPOCorrected
 
 import numpy as np
 import torch as th
