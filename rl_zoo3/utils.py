@@ -24,7 +24,7 @@ from stable_baselines3.common.vec_env import DummyVecEnv, SubprocVecEnv, VecEnv,
 from torch import nn as nn
 
 # custom algos
-from rl_zoo3.custom_algos import PPOCorrected, PPOCorrected2, PPO_changed_before_Normalization, PPOCorrected3
+from rl_zoo3.custom_algos import PPOCorrected, PPOCorrected2, PPO_changed_before_Normalization, PPOCorrected3, PPOCorrected4, PPOCorrected5
 
 ALGOS: dict[str, type[BaseAlgorithm]] = {
     "a2c": A2C,
@@ -45,6 +45,8 @@ ALGOS: dict[str, type[BaseAlgorithm]] = {
     "ppo_mod_sampling": PPOCorrected2,
     "ppo_changed_before_normalization": PPO_changed_before_Normalization,
     "ppo_no_clipping": PPOCorrected3,
+    "ppo_mod_gae": PPOCorrected4,
+    "ppo_mod_gae_2": PPOCorrected5,
 }
 
 # --- Custom-Algorithmen nachträglich registrieren (verhindert Zirkelimporte)
