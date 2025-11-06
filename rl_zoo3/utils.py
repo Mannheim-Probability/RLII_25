@@ -25,7 +25,7 @@ from rl_zoo3.custom_policy.minigrid_extractor import MinigridFeaturesExtractor
 from torch import nn as nn
 
 # custom algos
-from rl_zoo3.custom_algos import PPOCorrected, PPOCorrected2, PPO_changed_before_Normalization, PPOCorrected3
+from rl_zoo3.custom_algos import PPOCorrected, PPOCorrected2, PPO_changed_before_Normalization, PPOCorrected3, PPOCorrected4, PPOCorrected5, PPOCorrected6
 
 ALGOS: dict[str, type[BaseAlgorithm]] = {
     "a2c": A2C,
@@ -46,6 +46,9 @@ ALGOS: dict[str, type[BaseAlgorithm]] = {
     "ppo_mod_sampling": PPOCorrected2,
     "ppo_changed_before_normalization": PPO_changed_before_Normalization,
     "ppo_no_clipping": PPOCorrected3,
+    "ppo_mod_gae": PPOCorrected4,
+    "ppo_mod_gae_2": PPOCorrected5,
+    "ppo_mod_gae_3": PPOCorrected6,
 }
 
 

@@ -65,12 +65,12 @@
                 "request": "launch",
                 "program": "${workspaceFolder}/rl_zoo3/plots/all_plots.py",
                 "args": [
-                    "-a", "ppo", "ppo_corrected", "ppo_corrected_2", "ppo_discont_before_norm",
+                    "-a", "ppo", "ppo_mod_sampling", "ppo_mod_advantages",
                     "-e", "LunarLander-v3",
                     "-k", "results",
-                    "-max", "500000",
-                    "-min", "499999",
-                    "-f", "logs/example_lunarlander5",
+                    "-max", "1000000",
+                    "-min", "999999",
+                    "-f", "logs/example_lunarlander",
                     "-o", "plots/example_lunarlander/all_plots_test",
                     
                 ],

@@ -14,12 +14,12 @@ from stable_baselines3.common.utils import FloatSchedule, explained_variance, ob
 from stable_baselines3.common.callbacks import BaseCallback
 from stable_baselines3.common.vec_env import VecEnv
 
-from rl_zoo3.custom_buffers import TimedRolloutBuffer
+from rl_zoo3.custom_buffers import TimedRolloutBuffer3
 
-SelfPPOCorrected3 = TypeVar("SelfPPOCorrected3", bound="PPOCorrected3")
+SelfPPOCorrected4 = TypeVar("SelfPPOCorrected4", bound="PPOCorrected4")
 
 
-class PPOCorrected3(OnPolicyAlgorithm):
+class PPOCorrected4(OnPolicyAlgorithm):
     """
     Proximal Policy Optimization algorithm (PPO) (clip version)
 
@@ -99,7 +99,7 @@ class PPOCorrected3(OnPolicyAlgorithm):
         max_grad_norm: float = 0.5,
         use_sde: bool = False,
         sde_sample_freq: int = -1,
-        rollout_buffer_class: Optional[type[TimedRolloutBuffer]] = TimedRolloutBuffer,
+        rollout_buffer_class: Optional[type[TimedRolloutBuffer3]] = TimedRolloutBuffer3,
         rollout_buffer_kwargs: Optional[dict[str, Any]] = None,
         target_kl: Optional[float] = None,
         stats_window_size: int = 100,
@@ -228,8 +228,8 @@ class PPOCorrected3(OnPolicyAlgorithm):
                 times = rollout_data.times
                 # clipped surrogate loss
                 policy_loss_1 = th.pow(self.gamma, times) * advantages * ratio
-                # policy_loss_2 = th.pow(self.gamma, times) * advantages * th.clamp(ratio, 1 - clip_range, 1 + clip_range)
-                policy_loss = -policy_loss_1.mean()
+                policy_loss_2 = th.pow(self.gamma, times) * advantages * th.clamp(ratio, 1 - clip_range, 1 + clip_range)
+                policy_loss = -th.min(policy_loss_1, policy_loss_2).mean()
 
                 # Logging
                 pg_losses.append(policy_loss.item())
@@ -305,14 +305,14 @@ class PPOCorrected3(OnPolicyAlgorithm):
             self.logger.record("train/clip_range_vf", clip_range_vf)
 
     def learn(
-        self: SelfPPOCorrected3,
+        self: SelfPPOCorrected4,
         total_timesteps: int,
         callback: MaybeCallback = None,
         log_interval: int = 1,
         tb_log_name: str = "PPO",
         reset_num_timesteps: bool = True,
         progress_bar: bool = False,
-    ) -> SelfPPOCorrected3:
+    ) -> SelfPPOCorrected4:
         return super().learn(
             total_timesteps=total_timesteps,
             callback=callback,
@@ -326,7 +326,7 @@ class PPOCorrected3(OnPolicyAlgorithm):
         self,
         env: VecEnv,
         callback: BaseCallback,
-        rollout_buffer: TimedRolloutBuffer,
+        rollout_buffer: TimedRolloutBuffer3,
         n_rollout_steps: int,
     ) -> bool:
         """
@@ -410,9 +410,6 @@ class PPOCorrected3(OnPolicyAlgorithm):
                     with th.no_grad():
                         terminal_value = self.policy.predict_values(terminal_obs)[0]  # type: ignore[arg-type]
                     rewards[idx] += self.gamma * terminal_value
-            
-
-
             
             
             rollout_buffer.add(
