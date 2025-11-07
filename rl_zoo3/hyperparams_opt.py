@@ -591,5 +591,5 @@ HYPERPARAMS_CONVERTER = {
     "ppo_no_clipping": convert_onpolicy_params,  
     "ppo_mod_gae": convert_onpolicy_params, 
     "ppo_mod_gae_2": convert_onpolicy_params, 
-    "ppo_mod_gae_3": sample_ppo_params_with_kl_bound, 
+    "ppo_mod_gae_3": convert_onpolicy_params, 
 }
