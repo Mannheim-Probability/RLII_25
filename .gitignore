@@ -21,6 +21,7 @@ run_crossq_bipedal.sh
 logs/
 plots/
 .DS_Store
+slurms/
 
 tests/dummy_env/build/
 
