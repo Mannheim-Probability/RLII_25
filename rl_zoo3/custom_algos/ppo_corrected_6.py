@@ -11,10 +11,10 @@ from stable_baselines3.common.utils import obs_as_tensor
 from stable_baselines3.common.vec_env import VecEnv
 from stable_baselines3.ppo import PPO
 
-from rl_zoo3.custom_buffers.timed_rollout_buffer_2 import TimedRolloutBuffer2
+from rl_zoo3.custom_buffers.timed_rollout_buffer_4 import TimedRolloutBuffer4
 
 
-class PPOCorrected2(PPO):
+class PPOCorrected6(PPO):
     """
     Proximal Policy Optimization algorithm (PPO) (clip version)
 
@@ -88,7 +88,7 @@ class PPOCorrected2(PPO):
         max_grad_norm: float = 0.5,
         use_sde: bool = False,
         sde_sample_freq: int = -1,
-        rollout_buffer_class: Optional[type[RolloutBuffer]] = TimedRolloutBuffer2,
+        rollout_buffer_class: Optional[type[RolloutBuffer]] = TimedRolloutBuffer4,
         rollout_buffer_kwargs: Optional[dict[str, Any]] = None,
         target_kl: Optional[float] = None,
         stats_window_size: int = 100,
@@ -132,7 +132,7 @@ class PPOCorrected2(PPO):
         self,
         env: VecEnv,
         callback: BaseCallback,
-        rollout_buffer: TimedRolloutBuffer2,
+        rollout_buffer: TimedRolloutBuffer4,
         n_rollout_steps: int,
     ) -> bool:
         """
@@ -218,8 +218,6 @@ class PPOCorrected2(PPO):
                     rewards[idx] += self.gamma * terminal_value
             
 
-
-            
             
             rollout_buffer.add(
                 self._last_obs,  # type: ignore[arg-type]

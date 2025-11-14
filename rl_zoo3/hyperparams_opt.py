@@ -161,7 +161,7 @@ def sample_ppo_params(trial: optuna.Trial, n_actions: int, n_envs: int, addition
     # Uncomment to enable learning rate schedule
     #lr_schedule = trial.suggest_categorical('lr_schedule', ['linear', 'constant'])
     #if lr_schedule == "linear":
-    #     learning_rate = linear_schedule(learning_rate)
+    #    learning_rate = linear_schedule(learning_rate)
 
     # Display true values
     #trial.set_user_attr("gamma", 1 - one_minus_gamma)
@@ -582,17 +582,19 @@ HYPERPARAMS_SAMPLER = {
     "ddpg": sample_td3_params,
     "dqn": sample_dqn_params,
     "qrdqn": sample_qrdqn_params,
-    "ppo": sample_ppo_params,
+    "ppo": sample_ppo_params_with_kl_bound,
     "ppo_lstm": sample_ppo_lstm_params,
     "sac": sample_sac_params,
     "tqc": sample_tqc_params,
     "td3": sample_td3_params,
     "trpo": sample_trpo_params,
-    "PPOCorrected": sample_ppo_params,  
-    "ppo_mod_advantages": sample_ppo_params,  
-    "ppo_mod_sampling": sample_ppo_params,  
+    "ppo_changed_before_normalization": sample_ppo_params_with_kl_bound,  
+    "ppo_mod_advantages": sample_ppo_params_with_kl_bound,  
+    "ppo_mod_sampling": sample_ppo_params_with_kl_bound,  
     "ppo_no_clipping": sample_ppo_params_with_kl_bound,  
-    "ppo_changed_before_normalization" : sample_ppo_params,
+    "ppo_mod_gae": sample_ppo_params_with_kl_bound, 
+    "ppo_mod_gae_2": sample_ppo_params_with_kl_bound, 
+    "ppo_mod_gae_3": sample_ppo_params_with_kl_bound, 
 }
 
 # Convert sampled value to hyperparameters
@@ -612,7 +614,9 @@ HYPERPARAMS_CONVERTER = {
     "ppo_mod_advantages": convert_onpolicy_params,  
     "ppo_mod_sampling": convert_onpolicy_params,  
     "ppo_no_clipping": convert_onpolicy_params,  
-    "ppo_changed_before_normalization": convert_onpolicy_params,
+    "ppo_mod_gae": convert_onpolicy_params, 
+    "ppo_mod_gae_2": convert_onpolicy_params, 
+    "ppo_mod_gae_3": convert_onpolicy_params, 
 }
 
 
