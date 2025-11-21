@@ -24,8 +24,8 @@ from stable_baselines3.common.vec_env import DummyVecEnv, SubprocVecEnv, VecEnv,
 from torch import nn as nn
 
 # custom algos
-from rl_zoo3.custom_algos import PPOCorrected, PPOCorrected2, PPO_changed_before_Normalization, PPOCorrected3, PPOCorrected4, PPOCorrected5, PPOCorrected6, PPOCorrected4_2, PPOCorrected5_2, PPOCorrected6_2
-
+from rl_zoo3.custom_algos.old_versions import PPOCorrected, PPOCorrected2, PPO_changed_before_Normalization, PPOCorrected3, PPOCorrected4, PPOCorrected5, PPOCorrected6, PPOCorrected4_2, PPOCorrected5_2, PPOCorrected6_2
+rom rl_zoo3.custom_algos import PPO_MOD_SAMPLING, PPO_MOD_SAMPLING_GAE_T, PPO_MOD_SAMPLING_GAE_TAU, PPO_MOD_LOSS, PPO_MOD_LOSS_GAE_TAU, PPO_MOD_LOSS_GAE_T, PPO_MOD_GAE_TAU, PPO_MOD_GAE_T
 ALGOS: dict[str, type[BaseAlgorithm]] = {
     "a2c": A2C,
     "ddpg": DDPG,
@@ -42,7 +42,6 @@ ALGOS: dict[str, type[BaseAlgorithm]] = {
     "ppo_lstm": RecurrentPPO,
     # custom algorithms
     "ppo_mod_advantages": PPOCorrected,
-    "ppo_mod_sampling": PPOCorrected2,
     "ppo_changed_before_normalization": PPO_changed_before_Normalization,
     "ppo_no_clipping": PPOCorrected3,
     "ppo_mod_gae": PPOCorrected4,
@@ -51,6 +50,15 @@ ALGOS: dict[str, type[BaseAlgorithm]] = {
     "ppo_mod_gae_fixed_T": PPOCorrected4_2,
     "ppo_mod_gae_2_fixed_T": PPOCorrected5_2,
     "ppo_mod_gae_3_fixed_T": PPOCorrected6_2,
+
+    "ppo_mod_sampling" : PPO_MOD_SAMPLING, 
+    "ppo_mod_sampling_gae_t" : PPO_MOD_SAMPLING_GAE_T, 
+    "ppo_mod_sampling_gae_tau" : PPO_MOD_SAMPLING_GAE_TAU, 
+    "ppo_mod_loss" :    PPO_MOD_LOSS,
+    "ppo_mod_loss_gae_tau" : PPO_MOD_LOSS_GAE_TAU,
+    "ppo_mod_loss_gae_t" : PPO_MOD_LOSS_GAE_T,
+    "ppo_mod_gae_tau": PPO_MOD_GAE_TAU,
+    "ppo_mod_gae_t": PPO_MOD_GAE_T,
 }
 
 # --- Custom-Algorithmen nachträglich registrieren (verhindert Zirkelimporte)

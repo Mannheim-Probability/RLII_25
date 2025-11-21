@@ -1,21 +1,22 @@
-import warnings
-from typing import Any, ClassVar, Optional, TypeVar, Union
+from typing import Any, Optional, Union
 
 import numpy as np
 import torch as th
 from gymnasium import spaces
-from torch.nn import functional as F
-
 from stable_baselines3.common.buffers import RolloutBuffer
-from stable_baselines3.common.on_policy_algorithm import OnPolicyAlgorithm
-from stable_baselines3.common.policies import ActorCriticCnnPolicy, ActorCriticPolicy, BasePolicy, MultiInputActorCriticPolicy
-from stable_baselines3.common.type_aliases import GymEnv, MaybeCallback, Schedule
-from stable_baselines3.common.utils import FloatSchedule, explained_variance
+from stable_baselines3.common.callbacks import BaseCallback
+from stable_baselines3.common.policies import ActorCriticPolicy
+from stable_baselines3.common.type_aliases import GymEnv, Schedule
+from stable_baselines3.common.utils import obs_as_tensor
+from stable_baselines3.common.vec_env import VecEnv
+from stable_baselines3.ppo import PPO
 
-SelfDISCOUNTED_PPO = TypeVar("SelfDISCOUNTED_PPO", bound="DISCOUNTED_PPO")
+from rl_zoo3.custom_algos.ppo_mod_sampling import PPO_MOD_SAMPLING
+
+from rl_zoo3.custom_buffers.timed_rollout_buffer import TimedRolloutBuffer
 
 
-class DISCOUNTED_PPO(OnPolicyAlgorithm):
+class PPO_MOD_LOSS(PPO_MOD_SAMPLING):
     """
     Proximal Policy Optimization algorithm (PPO) (clip version)
 
@@ -71,12 +72,6 @@ class DISCOUNTED_PPO(OnPolicyAlgorithm):
     :param _init_setup_model: Whether or not to build the network at the creation of the instance
     """
 
-    policy_aliases: ClassVar[dict[str, type[BasePolicy]]] = {
-        "MlpPolicy": ActorCriticPolicy,
-        "CnnPolicy": ActorCriticCnnPolicy,
-        "MultiInputPolicy": MultiInputActorCriticPolicy,
-    }
-
     def __init__(
         self,
         policy: Union[str, type[ActorCriticPolicy]],
@@ -95,7 +90,7 @@ class DISCOUNTED_PPO(OnPolicyAlgorithm):
         max_grad_norm: float = 0.5,
         use_sde: bool = False,
         sde_sample_freq: int = -1,
-        rollout_buffer_class: Optional[type[RolloutBuffer]] = None,
+        rollout_buffer_class: Optional[type[RolloutBuffer]] = TimedRolloutBuffer,
         rollout_buffer_kwargs: Optional[dict[str, Any]] = None,
         target_kl: Optional[float] = None,
         stats_window_size: int = 100,
@@ -106,84 +101,39 @@ class DISCOUNTED_PPO(OnPolicyAlgorithm):
         device: Union[th.device, str] = "auto",
         _init_setup_model: bool = True,
     ):
+        
         super().__init__(
             policy,
             env,
-            learning_rate=learning_rate,
-            n_steps=n_steps,
-            gamma=gamma,
-            gae_lambda=gae_lambda,
-            ent_coef=ent_coef,
-            vf_coef=vf_coef,
-            max_grad_norm=max_grad_norm,
-            use_sde=use_sde,
-            sde_sample_freq=sde_sample_freq,
-            rollout_buffer_class=rollout_buffer_class,
-            rollout_buffer_kwargs=rollout_buffer_kwargs,
-            stats_window_size=stats_window_size,
-            tensorboard_log=tensorboard_log,
-            policy_kwargs=policy_kwargs,
-            verbose=verbose,
-            device=device,
-            seed=seed,
-            _init_setup_model=False,
-            supported_action_spaces=(
-                spaces.Box,
-                spaces.Discrete,
-                spaces.MultiDiscrete,
-                spaces.MultiBinary,
-            ),
+            learning_rate,
+            n_steps,
+            batch_size,
+            n_epochs,
+            gamma,
+            gae_lambda,
+            clip_range,
+            clip_range_vf,
+            normalize_advantage,
+            ent_coef,
+            vf_coef,
+            max_grad_norm,
+            use_sde,
+            sde_sample_freq,
+            rollout_buffer_class,
+            rollout_buffer_kwargs,
+            target_kl,
+            stats_window_size,
+            tensorboard_log,
+            policy_kwargs,
+            verbose,
+            seed,
+            device,
+            _init_setup_model,
         )
-
-        # Sanity check, otherwise it will lead to noisy gradient and NaN
-        # because of the advantage normalization
-        if normalize_advantage:
-            assert (
-                batch_size > 1
-            ), "`batch_size` must be greater than 1. See https://github.com/DLR-RM/stable-baselines3/issues/440"
-
-        if self.env is not None:
-            # Check that `n_steps * n_envs > 1` to avoid NaN
-            # when doing advantage normalization
-            buffer_size = self.env.num_envs * self.n_steps
-            assert buffer_size > 1 or (
-                not normalize_advantage
-            ), f"`n_steps * n_envs` must be greater than 1. Currently n_steps={self.n_steps} and n_envs={self.env.num_envs}"
-            # Check that the rollout buffer size is a multiple of the mini-batch size
-            untruncated_batches = buffer_size // batch_size
-            if buffer_size % batch_size > 0:
-                warnings.warn(
-                    f"You have specified a mini-batch size of {batch_size},"
-                    f" but because the `RolloutBuffer` is of size `n_steps * n_envs = {buffer_size}`,"
-                    f" after every {untruncated_batches} untruncated mini-batches,"
-                    f" there will be a truncated mini-batch of size {buffer_size % batch_size}\n"
-                    f"We recommend using a `batch_size` that is a factor of `n_steps * n_envs`.\n"
-                    f"Info: (n_steps={self.n_steps} and n_envs={self.env.num_envs})"
-                )
-        self.batch_size = batch_size
-        self.n_epochs = n_epochs
-        self.clip_range = clip_range
-        self.clip_range_vf = clip_range_vf
-        self.normalize_advantage = normalize_advantage
-        self.target_kl = target_kl
-
-        if _init_setup_model:
-            self._setup_model()
-
-    def _setup_model(self) -> None:
-        super()._setup_model()
-
-        # Initialize schedules for policy/value clipping
-        self.clip_range = FloatSchedule(self.clip_range)
-        if self.clip_range_vf is not None:
-            if isinstance(self.clip_range_vf, (float, int)):
-                assert self.clip_range_vf > 0, "`clip_range_vf` must be positive, " "pass `None` to deactivate vf clipping"
-
-            self.clip_range_vf = FloatSchedule(self.clip_range_vf)
 
     def train(self) -> None:
         """
-        Update policy using the currently gathered rollout buffer.
+        Update policy using the currently gathered rollout buffer. In contrast to standard PPO implementation we scale the loss by gamma ^t. 
         """
         # Switch to train mode (this affects batch norm / dropout)
         self.policy.set_training_mode(True)
@@ -221,9 +171,10 @@ class DISCOUNTED_PPO(OnPolicyAlgorithm):
                 # ratio between old and new policy, should be one at the first iteration
                 ratio = th.exp(log_prob - rollout_data.old_log_prob)
 
+                times = rollout_data.times
                 # clipped surrogate loss
-                policy_loss_1 = advantages * ratio
-                policy_loss_2 = advantages * th.clamp(ratio, 1 - clip_range, 1 + clip_range)
+                policy_loss_1 = th.pow(self.gamma, times) * advantages * ratio
+                policy_loss_2 = th.pow(self.gamma, times) * advantages * th.clamp(ratio, 1 - clip_range, 1 + clip_range)
                 policy_loss = -th.min(policy_loss_1, policy_loss_2).mean()
 
                 # Logging
@@ -298,21 +249,3 @@ class DISCOUNTED_PPO(OnPolicyAlgorithm):
         self.logger.record("train/clip_range", clip_range)
         if self.clip_range_vf is not None:
             self.logger.record("train/clip_range_vf", clip_range_vf)
-
-    def learn(
-        self: SelfDISCOUNTED_PPO,
-        total_timesteps: int,
-        callback: MaybeCallback = None,
-        log_interval: int = 1,
-        tb_log_name: str = "DISCOUNTED_PPO",
-        reset_num_timesteps: bool = True,
-        progress_bar: bool = False,
-    ) -> SelfDISCOUNTED_PPO:
-        return super().learn(
-            total_timesteps=total_timesteps,
-            callback=callback,
-            log_interval=log_interval,
-            tb_log_name=tb_log_name,
-            reset_num_timesteps=reset_num_timesteps,
-            progress_bar=progress_bar,
-        )
