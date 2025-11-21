@@ -594,6 +594,10 @@ HYPERPARAMS_SAMPLER = {
     "ppo_no_clipping": sample_ppo_params_with_kl_bound,  
     "ppo_mod_gae": sample_ppo_params_with_kl_bound, 
     "ppo_mod_gae_2": sample_ppo_params_with_kl_bound, 
+    "ppo_mod_gae_3": sample_ppo_params_with_kl_bound, 
+    "ppo_mod_gae_fixed_T": sample_ppo_params_with_kl_bound, 
+    "ppo_mod_gae_2_fixed_T": sample_ppo_params_with_kl_bound, 
+    "ppo_mod_gae_3_fixed_T": sample_ppo_params_with_kl_bound,
 }
 
 # Convert sampled value to hyperparameters
@@ -615,6 +619,10 @@ HYPERPARAMS_CONVERTER = {
     "ppo_no_clipping": convert_onpolicy_params,  
     "ppo_mod_gae": convert_onpolicy_params, 
     "ppo_mod_gae_2": convert_onpolicy_params, 
+    "ppo_mod_gae_3": convert_onpolicy_params, 
+    "ppo_mod_gae_fixed_T": convert_onpolicy_params, 
+    "ppo_mod_gae_2_fixed_T": convert_onpolicy_params, 
+    "ppo_mod_gae_3_fixed_T": convert_onpolicy_params, 
 }
 
 
