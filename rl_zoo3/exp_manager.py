@@ -18,11 +18,7 @@ import yaml
 from gymnasium import spaces
 from huggingface_sb3 import EnvironmentName
 from optuna.pruners import BasePruner, MedianPruner, NopPruner, SuccessiveHalvingPruner
-<<<<<<< HEAD
 from optuna.samplers import BaseSampler, RandomSampler, TPESampler, GPSampler
-=======
-from optuna.samplers import BaseSampler, RandomSampler, TPESampler, QMCSampler
->>>>>>> fa0a87b (qmc sampler added)
 from optuna.study import MaxTrialsCallback
 from optuna.trial import TrialState
 from optuna.visualization import plot_optimization_history, plot_param_importances
