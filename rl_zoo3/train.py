@@ -232,7 +232,12 @@ def train() -> None:
             monitor_gym=True,  # auto-upload the videos of agents playing the game
             save_code=True,  # optional
         )
-        args.tensorboard_log = f"runs/{run_name}"
+        if args.tensorboard_log is not None:
+            pass
+        elif args.log_folder is not None:
+            args.tensorboard_log = os.path.join(args.log_folder, "tb", run_name)
+        else:
+            args.tensorboard_log = f"runs/{run_name}"
 
     exp_manager = ExperimentManager(
         args,

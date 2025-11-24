@@ -14,7 +14,7 @@ algo="dqn"
 envs=("NameThisGameNoFrameskip-v4")
 seeds=("1" "2" "3" "4")
 
-# Assuming you have 2 GPUs available
+# Assuming you have 4 GPUs available
 for i in "${!seeds[@]}"; do
 
     seed=${seeds[$i]}
@@ -25,7 +25,7 @@ for i in "${!seeds[@]}"; do
         gpu_id=$((i+j))
 
         # Use CUDA_VISIBLE_DEVICES to specify which GPU to use for each task
-        CUDA_VISIBLE_DEVICES=$gpu_id python train.py --algo $algo --env $env --hyperparams n_timesteps:100 --eval-freq 25 --log-interval 25 --eval-episodes 2 --n-eval-envs 1 --seed $seed -f "logs/example_project/example_3" --verbose 1 --uuid --track --wandb-project-name "Cluster_testing" --wandb-entity "RL2_2025" -tags test_cluster_wandb  &
+        CUDA_VISIBLE_DEVICES=$gpu_id python train.py --algo $algo --env $env --hyperparams n_timesteps:1000 --eval-freq 25 --log-interval 25 --eval-episodes 2 --n-eval-envs 1 --seed $seed -f "logs/example_project/example_3" --verbose 1 --uuid --track --wandb-project-name "Cluster_testing" --wandb-entity "RL2_2025" -tags test_cluster_wandb  &
 
     done
 done

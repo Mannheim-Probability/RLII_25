@@ -17,3 +17,5 @@ huggingface_sb3>=3.0,<4.0
 rliable>=1.0.5
 pytablewriter~=0.64
 scikit-optimize==0.10.2
+# need to use hyperparam optimization
+cmaes==0.12.0

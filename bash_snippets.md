@@ -51,6 +51,17 @@ sreport --tres cpu,gres/gpu cluster AccountUtilizationByUser Start=2020-03-01 En
 
 ## SLURM helpful batch commands
 
+### Check quota 
+On $HOME
+```
+lfs quota -uh $(whoami) $HOME
+```
+
+Elsewhere
+```
+lfs quota -uh $(whoami)
+```
+
 ### Submit all .sh jobs in a folder
 ```
 for script in path/to/folder/*.sh; do
@@ -86,4 +97,30 @@ rsync -av --exclude='*.zip' /source/directory/ /local/goal/directory/
 
 ## Workspaces commands
 
-Work in progress
+### Create workspace
+Maximum is 60 days, 3 extensions, use "-" instead of "_".
+```
+ws_allocate workspace-name x
+```
+where x is the amount of days
+
+### List all workspaces
+```
+ws_list
+```
+
+### Find path to a workspace
+```
+ws_find workspace-name
+```
+
+### Extend lifetime
+Extends by amount of days used at creation or x if specified.
+```
+ws_extend workspace-name <optional: x>
+```
+
+### Delete workspace
+```
+ws_release workspace-name
+```
