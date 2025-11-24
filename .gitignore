@@ -20,6 +20,7 @@ hub
 _build/
 run_crossq_bipedal.sh
 logs/
+logs_to_download/
 plots/
 .DS_Store
 slurms/
