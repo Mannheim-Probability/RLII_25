@@ -24,12 +24,8 @@ from stable_baselines3.common.vec_env import DummyVecEnv, SubprocVecEnv, VecEnv,
 from torch import nn as nn
 
 # custom algos
-<<<<<<< HEAD
-from rl_zoo3.custom_algos import PPOCorrected, PPOCorrected2, PPO_changed_before_Normalization, PPOCorrected3, PPOCorrected4, PPOCorrected5, PPOCorrected6
 from rl_zoo3.custom_algos.ppo_rd_action.ppo_rd import PPO_RD
-=======
 from rl_zoo3.custom_algos import PPOCorrected, PPOCorrected2, PPO_changed_before_Normalization, PPOCorrected3, PPOCorrected4, PPOCorrected5, PPOCorrected6, PPOCorrected4_2, PPOCorrected5_2, PPOCorrected6_2
->>>>>>> 388fdf44b1d771f6c0a3361d33e773e9b182380d
 
 ALGOS: dict[str, type[BaseAlgorithm]] = {
     "a2c": A2C,
@@ -53,13 +49,10 @@ ALGOS: dict[str, type[BaseAlgorithm]] = {
     "ppo_mod_gae": PPOCorrected4,
     "ppo_mod_gae_2": PPOCorrected5,
     "ppo_mod_gae_3": PPOCorrected6,
-<<<<<<< HEAD
-    "ppo_rd": PPO_RD,
-=======
     "ppo_mod_gae_fixed_T": PPOCorrected4_2,
     "ppo_mod_gae_2_fixed_T": PPOCorrected5_2,
     "ppo_mod_gae_3_fixed_T": PPOCorrected6_2,
->>>>>>> 388fdf44b1d771f6c0a3361d33e773e9b182380d
+    "ppo_rd": PPO_RD,
 }
 
 
