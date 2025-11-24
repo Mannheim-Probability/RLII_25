@@ -24,8 +24,8 @@ from stable_baselines3.common.vec_env import DummyVecEnv, SubprocVecEnv, VecEnv,
 from torch import nn as nn
 
 # custom algos
-from rl_zoo3.custom_algos.old_versions import PPOCorrected, PPOCorrected2, PPO_changed_before_Normalization, PPOCorrected3, PPOCorrected4, PPOCorrected5, PPOCorrected6, PPOCorrected4_2, PPOCorrected5_2, PPOCorrected6_2
-rom rl_zoo3.custom_algos import PPO_MOD_SAMPLING, PPO_MOD_SAMPLING_GAE_T, PPO_MOD_SAMPLING_GAE_TAU, PPO_MOD_LOSS, PPO_MOD_LOSS_GAE_TAU, PPO_MOD_LOSS_GAE_T, PPO_MOD_GAE_TAU, PPO_MOD_GAE_T
+from rl_zoo3.custom_algos import PPO_MOD_SAMPLING, PPO_MOD_SAMPLING_GAE_T, PPO_MOD_SAMPLING_GAE_TAU, PPO_MOD_LOSS, PPO_MOD_LOSS_GAE_TAU, PPO_MOD_LOSS_GAE_T, PPO_MOD_GAE_TAU, PPO_MOD_GAE_T
+
 ALGOS: dict[str, type[BaseAlgorithm]] = {
     "a2c": A2C,
     "ddpg": DDPG,
@@ -41,16 +41,6 @@ ALGOS: dict[str, type[BaseAlgorithm]] = {
     "trpo": TRPO,
     "ppo_lstm": RecurrentPPO,
     # custom algorithms
-    "ppo_mod_advantages": PPOCorrected,
-    "ppo_changed_before_normalization": PPO_changed_before_Normalization,
-    "ppo_no_clipping": PPOCorrected3,
-    "ppo_mod_gae": PPOCorrected4,
-    "ppo_mod_gae_2": PPOCorrected5,
-    "ppo_mod_gae_3": PPOCorrected6,
-    "ppo_mod_gae_fixed_T": PPOCorrected4_2,
-    "ppo_mod_gae_2_fixed_T": PPOCorrected5_2,
-    "ppo_mod_gae_3_fixed_T": PPOCorrected6_2,
-
     "ppo_mod_sampling" : PPO_MOD_SAMPLING, 
     "ppo_mod_sampling_gae_t" : PPO_MOD_SAMPLING_GAE_T, 
     "ppo_mod_sampling_gae_tau" : PPO_MOD_SAMPLING_GAE_TAU, 
@@ -60,14 +50,6 @@ ALGOS: dict[str, type[BaseAlgorithm]] = {
     "ppo_mod_gae_tau": PPO_MOD_GAE_TAU,
     "ppo_mod_gae_t": PPO_MOD_GAE_T,
 }
-
-# --- Custom-Algorithmen nachträglich registrieren (verhindert Zirkelimporte)
-try:
-    from rl_zoo3.custom_algos.example import EXAMPLE  # importiert NICHT utils
-    ALGOS["example"] = EXAMPLE
-except Exception as e:
-    # Optional: weich tolerieren oder raise; fürs Debuggen:
-    print(f"[rl_zoo3] Hinweis: Custom-Algorithmus 'example' nicht geladen: {e}")
 
 
 def flatten_dict_observations(env: gym.Env) -> gym.Env:

@@ -13,20 +13,13 @@ from stable_baselines3.ppo import PPO
 
 from rl_zoo3.custom_algos.ppo_mod_sampling import PPO_MOD_SAMPLING
 
-from rl_zoo3.custom_buffers.timed_rollout_buffer import TimedRolloutBuffer4
+from rl_zoo3.custom_buffers.timed_rollout_buffer_gae_tau import TimedRolloutBufferSamplingGaeTau
 
 
 class PPO_MOD_SAMPLING_GAE_TAU(PPO_MOD_SAMPLING):
     """
-    Proximal Policy Optimization algorithm (PPO) (clip version)
-
-    Paper: https://arxiv.org/abs/1707.06347
-    Code: This implementation borrows code from OpenAI Spinning Up (https://github.com/openai/spinningup/)
-    https://github.com/ikostrikov/pytorch-a2c-ppo-acktr-gail and
-    Stable Baselines (PPO2 from https://github.com/hill-a/stable-baselines)
-
-    Introduction to PPO: https://spinningup.openai.com/en/latest/algorithms/ppo.html
-
+    Proximal Policy Optimization algorithm (PPO) with modified rollout buffer that samples based on discounted state visitation and uses stopping time GAE. 
+    
     :param policy: The policy model to use (MlpPolicy, CnnPolicy, ...)
     :param env: The environment to learn from (if registered in Gym, can be str)
     :param learning_rate: The learning rate, it can be a function
@@ -90,7 +83,7 @@ class PPO_MOD_SAMPLING_GAE_TAU(PPO_MOD_SAMPLING):
         max_grad_norm: float = 0.5,
         use_sde: bool = False,
         sde_sample_freq: int = -1,
-        rollout_buffer_class: Optional[type[RolloutBuffer]] = TimedRolloutBuffer4,
+        rollout_buffer_class: Optional[type[RolloutBuffer]] = TimedRolloutBufferSamplingGaeTau,
         rollout_buffer_kwargs: Optional[dict[str, Any]] = None,
         target_kl: Optional[float] = None,
         stats_window_size: int = 100,

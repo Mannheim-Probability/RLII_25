@@ -11,7 +11,7 @@ from stable_baselines3.common.utils import obs_as_tensor
 from stable_baselines3.common.vec_env import VecEnv
 from stable_baselines3.ppo import PPO
 
-from rl_zoo3.custom_buffers.timed_rollout_buffer_2 import TimedRolloutBuffer2
+from rl_zoo3.custom_buffers.timed_rollout_buffer_sampling import TimedRolloutBuffer2
 
 
 class PPOCorrected2(PPO):

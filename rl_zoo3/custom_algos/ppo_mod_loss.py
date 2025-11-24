@@ -2,14 +2,15 @@ from typing import Any, Optional, Union
 
 import numpy as np
 import torch as th
+from torch.nn import functional as F
+
 from gymnasium import spaces
 from stable_baselines3.common.buffers import RolloutBuffer
-from stable_baselines3.common.callbacks import BaseCallback
+
 from stable_baselines3.common.policies import ActorCriticPolicy
 from stable_baselines3.common.type_aliases import GymEnv, Schedule
-from stable_baselines3.common.utils import obs_as_tensor
-from stable_baselines3.common.vec_env import VecEnv
-from stable_baselines3.ppo import PPO
+
+from stable_baselines3.common.utils import  explained_variance
 
 from rl_zoo3.custom_algos.ppo_mod_sampling import PPO_MOD_SAMPLING
 
@@ -18,14 +19,7 @@ from rl_zoo3.custom_buffers.timed_rollout_buffer import TimedRolloutBuffer
 
 class PPO_MOD_LOSS(PPO_MOD_SAMPLING):
     """
-    Proximal Policy Optimization algorithm (PPO) (clip version)
-
-    Paper: https://arxiv.org/abs/1707.06347
-    Code: This implementation borrows code from OpenAI Spinning Up (https://github.com/openai/spinningup/)
-    https://github.com/ikostrikov/pytorch-a2c-ppo-acktr-gail and
-    Stable Baselines (PPO2 from https://github.com/hill-a/stable-baselines)
-
-    Introduction to PPO: https://spinningup.openai.com/en/latest/algorithms/ppo.html
+    Proximal Policy Optimization algorithm (PPO) with modified rollout buffer that intergrates discounting into PPO loss.
 
     :param policy: The policy model to use (MlpPolicy, CnnPolicy, ...)
     :param env: The environment to learn from (if registered in Gym, can be str)

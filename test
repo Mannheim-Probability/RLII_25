@@ -1,0 +1,9 @@
+import mujoco
+print(mujoco.__version__)
+
+import gymnasium as gym
+env = gym.make("InvertedDoublePendulum-v2", render_mode="human")
+obs, info = env.reset()
+for _ in range(1000):
+    env.step(env.action_space.sample())
+    print("step done")
