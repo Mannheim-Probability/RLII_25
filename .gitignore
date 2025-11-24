@@ -16,6 +16,7 @@ runs
 hub
 *.mp4
 *.json
+*.sh
 _build/
 run_crossq_bipedal.sh
 logs/

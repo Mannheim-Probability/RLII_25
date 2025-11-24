@@ -25,6 +25,7 @@ from torch import nn as nn
 
 # custom algos
 from rl_zoo3.custom_algos import PPOCorrected, PPOCorrected2, PPO_changed_before_Normalization, PPOCorrected3, PPOCorrected4, PPOCorrected5, PPOCorrected6
+from rl_zoo3.custom_algos.ppo_rd_action.ppo_rd import PPO_RD
 
 ALGOS: dict[str, type[BaseAlgorithm]] = {
     "a2c": A2C,
@@ -48,6 +49,7 @@ ALGOS: dict[str, type[BaseAlgorithm]] = {
     "ppo_mod_gae": PPOCorrected4,
     "ppo_mod_gae_2": PPOCorrected5,
     "ppo_mod_gae_3": PPOCorrected6,
+    "ppo_rd": PPO_RD,
 }
 
 
