@@ -11,7 +11,7 @@ from stable_baselines3.common.utils import obs_as_tensor
 from stable_baselines3.common.vec_env import VecEnv
 from stable_baselines3.ppo import PPO
 
-from rl_zoo3.custom_buffers.timed_rollout_buffer import TimedRolloutBufferSampling
+from rl_zoo3.custom_buffers.timed_rollout_buffer import TimedRolloutBufferEpisodic
 
 
 
@@ -83,7 +83,7 @@ class PPO_ROLLOUT_BASED(PPO):
         max_grad_norm: float = 0.5,
         use_sde: bool = False,
         sde_sample_freq: int = -1,
-        rollout_buffer_class: Optional[type[RolloutBuffer]] = TimedRolloutBufferSampling,
+        rollout_buffer_class: Optional[type[RolloutBuffer]] = TimedRolloutBufferEpisodic,
         rollout_buffer_kwargs: Optional[dict[str, Any]] = None,
         target_kl: Optional[float] = None,
         stats_window_size: int = 100,
@@ -128,7 +128,7 @@ class PPO_ROLLOUT_BASED(PPO):
         self,
         env: VecEnv,
         callback: BaseCallback,
-        rollout_buffer: TimedRolloutBufferSampling,
+        rollout_buffer: TimedRolloutBufferEpisodic,
         n_rollout_steps: int,
     ) -> bool:
         """
@@ -358,5 +358,5 @@ class PPO_ROLLOUT_BASED(PPO):
         callback.update_locals(locals())
 
         callback.on_rollout_end()
-        
+
         return True

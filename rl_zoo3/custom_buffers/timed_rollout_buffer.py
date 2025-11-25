@@ -214,3 +214,119 @@ class TimedRolloutBufferSampling(TimedRolloutBuffer):
             inds = np.random.choice(N, batch_size, replace=True, p=p)
             yield self._get_samples(inds)
             start_idx += batch_size
+
+
+
+
+class TimedRolloutBufferEpisodic(TimedRolloutBuffer):
+    """
+    Episodic Rollout buffer:
+    - speichert (pos)-Indices gruppiert nach Episodes
+    - key = (env_idx, episode_id)
+    - value = [pos_0, pos_1, ..., pos_T]
+    - get() sampled ganze Episoden, mapped sie über swap_and_flatten
+    """
+
+    def __init__(
+        self,
+        buffer_size: int,
+        observation_space: spaces.Space,
+        action_space: spaces.Space,
+        device: Union[th.device, str] = "auto",
+        gae_lambda: float = 1.0,
+        gamma: float = 0.99,
+        n_envs: int = 1,
+    ):
+        super().__init__(buffer_size, observation_space, action_space,
+                         device, gae_lambda, gamma, n_envs)
+        self.episodes_per_env = None
+        self.episode_to_indices = {}
+        self.reset()
+
+    def reset(self, episodes_per_env: Optional[np.ndarray] = None) -> None:
+        self.episode_to_indices = {}
+        if episodes_per_env is not None:
+            self.episodes_per_env = np.asarray(episodes_per_env, dtype=int)
+        super().reset()
+
+    def add(
+        self,
+        obs: np.ndarray,
+        action: np.ndarray,
+        reward: np.ndarray,
+        episode_start: np.ndarray,
+        time: np.ndarray,
+        episode_id: np.ndarray,  # shape (n_envs,)
+        value: th.Tensor,
+        log_prob: th.Tensor,
+    ) -> None:
+
+        current_pos = self.pos
+
+        for env_idx, ep_id in enumerate(episode_id):
+
+            if self.episodes_per_env is not None:
+                # gültig: 0 ... K-1
+                if ep_id >= self.episodes_per_env[env_idx]:
+                    continue
+
+            key = (env_idx, int(ep_id))
+
+            if key not in self.episode_to_indices:
+                self.episode_to_indices[key] = []
+
+            self.episode_to_indices[key].append(current_pos)
+
+        super().add(obs, action, reward, episode_start, time, value, log_prob)
+
+    def get(self, n_episodes_to_batch: Optional[int] = None):
+
+        assert self.full, "Rollout buffer not full"
+
+        # SB3 flatten:
+        if not self.generator_ready:
+            tensor_fields = [
+                "observations", "actions", "values",
+                "log_probs", "advantages",
+                "returns", "times",
+            ]
+            for name in tensor_fields:
+                self.__dict__[name] = self.swap_and_flatten(self.__dict__[name])
+            self.generator_ready = True
+
+        all_keys = list(self.episode_to_indices.keys())
+        n_total = len(all_keys)
+        assert n_total > 0
+
+        if n_episodes_to_batch is None:
+            n_episodes_to_batch = n_total
+
+        perm = np.random.permutation(n_total)
+        start = 0
+
+        while start < n_total:
+            batch_keys = [all_keys[i] for i in perm[start:start+n_episodes_to_batch]]
+
+            flat_indices = []
+            for (env_idx, ep_id) in batch_keys:
+                for pos in self.episode_to_indices[(env_idx, ep_id)]:
+                    flat_idx = env_idx * self.buffer_size + pos
+                    flat_indices.append(flat_idx)
+
+            batch_inds = np.array(flat_indices, dtype=np.int64)
+
+            yield self._get_samples(batch_inds)
+
+            start += n_episodes_to_batch
+
+    def _get_samples(self, batch_inds: np.ndarray, env=None):
+        data = (
+            self.observations[batch_inds],
+            self.actions[batch_inds],
+            self.values[batch_inds],
+            self.log_probs[batch_inds],
+            self.advantages[batch_inds],
+            self.returns[batch_inds],
+            self.times[batch_inds],
+        )
+        return TimedRolloutBufferSamples(*tuple(map(self.to_torch, data)))
