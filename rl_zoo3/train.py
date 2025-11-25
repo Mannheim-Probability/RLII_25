@@ -230,9 +230,9 @@ def train() -> None:
             monitor_gym=True,  # auto-upload the videos of agents playing the game
             save_code=True,  # optional
         )
-        if args.tensorboard_log is not None:
+        if args.tensorboard_log not in (None, ""):
             pass
-        elif args.log_folder is not None:
+        elif args.log_folder not in (None, ""):
             args.tensorboard_log = os.path.join(args.log_folder, "tb", run_name)
             os.makedirs(args.tensorboard_log, exist_ok=True)
         else:
