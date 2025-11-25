@@ -234,6 +234,7 @@ def train() -> None:
             pass
         elif args.log_folder is not None:
             args.tensorboard_log = os.path.join(args.log_folder, "tb", run_name)
+            os.makedirs(args.tensorboard_log, exist_ok=True)
         else:
             args.tensorboard_log = f"runs/{run_name}"
 
