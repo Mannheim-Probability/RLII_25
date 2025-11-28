@@ -98,7 +98,7 @@ rsync -av --exclude='*.zip' /source/directory/ /local/goal/directory/
 ## Workspaces commands
 
 ### Create workspace
-Maximum is 60 days, 3 extensions, use "-" instead of "_".
+Maximum is 60 days, 3 extensions.
 ```
 ws_allocate workspace-name x
 ```

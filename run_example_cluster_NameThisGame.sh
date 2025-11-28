@@ -2,7 +2,7 @@
 
 #SBATCH --nodes=1
 #SBATCH --time=48:00:00
-#SBATCH -p gpu_h100,gpu_mi300,gpu_a100_il,gpu_h100_il
+#SBATCH -p gpu_h100,gpu_a100_il,gpu_h100_il
 #SBATCH --ntasks=4
 #SBATCH --mem=235000
 #SBATCH --gres=gpu:4
