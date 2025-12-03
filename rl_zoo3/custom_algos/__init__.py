@@ -10,6 +10,8 @@ from .ppo_mod_loss_gae_T import PPO_MOD_LOSS_GAE_T
 from .ppo_mod_gae_tau import PPO_MOD_GAE_TAU
 from .ppo_mod_gae_T import PPO_MOD_GAE_T
 
+from.ppo_rollout_based import PPO_ROLLOUT_BASED
+
 
 __all__ = [
     "PPO_MOD_SAMPLING",
@@ -20,4 +22,5 @@ __all__ = [
     "PPO_MOD_LOSS_GAE_T",
     "PPO_MOD_GAE_TAU",
     "PPO_MOD_GAE_T",
+    "PPO_ROLLOUT_BASED",
 ]

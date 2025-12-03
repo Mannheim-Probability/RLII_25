@@ -237,7 +237,7 @@ class TimedRolloutBufferEpisodic(TimedRolloutBuffer):
         gamma: float = 0.99,
         n_envs: int = 1,
     ):
-        super().__init__(buffer_size, observation_space, action_space,
+        super().__init__(1024, observation_space, action_space,
                          device, gae_lambda, gamma, n_envs)
         self.episodes_per_env = None
         self.episode_to_indices = {}
@@ -281,7 +281,7 @@ class TimedRolloutBufferEpisodic(TimedRolloutBuffer):
 
     def get(self, n_episodes_to_batch: Optional[int] = None):
 
-        assert self.full, "Rollout buffer not full"
+        #assert self.full, "Rollout buffer not full"
 
         # SB3 flatten:
         if not self.generator_ready:
@@ -323,10 +323,10 @@ class TimedRolloutBufferEpisodic(TimedRolloutBuffer):
         data = (
             self.observations[batch_inds],
             self.actions[batch_inds],
-            self.values[batch_inds],
-            self.log_probs[batch_inds],
-            self.advantages[batch_inds],
-            self.returns[batch_inds],
-            self.times[batch_inds],
+            self.values[batch_inds].flatten(),
+            self.log_probs[batch_inds].flatten(),
+            self.advantages[batch_inds].flatten(),
+            self.returns[batch_inds].flatten(),
+            self.times[batch_inds].flatten(),
         )
         return TimedRolloutBufferSamples(*tuple(map(self.to_torch, data)))

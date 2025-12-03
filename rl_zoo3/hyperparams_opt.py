@@ -596,6 +596,7 @@ HYPERPARAMS_SAMPLER = {
     "ppo_mod_loss_gae_t" : sample_ppo_params_with_kl_bound,
     "ppo_mod_gae_tau": sample_ppo_params_with_kl_bound,
     "ppo_mod_gae_t": sample_ppo_params_with_kl_bound,
+    "ppo_rollout_based": sample_ppo_params_with_kl_bound, 
 }
 
 # Convert sampled value to hyperparameters
@@ -619,6 +620,7 @@ HYPERPARAMS_CONVERTER = {
     "ppo_mod_loss_gae_t" : convert_onpolicy_params,
     "ppo_mod_gae_tau": convert_onpolicy_params,
     "ppo_mod_gae_t": convert_onpolicy_params,
+    "ppo_rollout_based": convert_onpolicy_params, 
 }
 
 

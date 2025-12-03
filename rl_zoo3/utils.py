@@ -24,7 +24,7 @@ from stable_baselines3.common.vec_env import DummyVecEnv, SubprocVecEnv, VecEnv,
 from torch import nn as nn
 
 # custom algos
-from rl_zoo3.custom_algos import PPO_MOD_SAMPLING, PPO_MOD_SAMPLING_GAE_T, PPO_MOD_SAMPLING_GAE_TAU, PPO_MOD_LOSS, PPO_MOD_LOSS_GAE_TAU, PPO_MOD_LOSS_GAE_T, PPO_MOD_GAE_TAU, PPO_MOD_GAE_T
+from rl_zoo3.custom_algos import PPO_MOD_SAMPLING, PPO_MOD_SAMPLING_GAE_T, PPO_MOD_SAMPLING_GAE_TAU, PPO_MOD_LOSS, PPO_MOD_LOSS_GAE_TAU, PPO_MOD_LOSS_GAE_T, PPO_MOD_GAE_TAU, PPO_MOD_GAE_T, PPO_ROLLOUT_BASED
 
 ALGOS: dict[str, type[BaseAlgorithm]] = {
     "a2c": A2C,
@@ -49,6 +49,7 @@ ALGOS: dict[str, type[BaseAlgorithm]] = {
     "ppo_mod_loss_gae_t" : PPO_MOD_LOSS_GAE_T,
     "ppo_mod_gae_tau": PPO_MOD_GAE_TAU,
     "ppo_mod_gae_t": PPO_MOD_GAE_T,
+    "ppo_rollout_based": PPO_ROLLOUT_BASED, 
 }
 
 
